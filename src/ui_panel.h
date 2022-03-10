@@ -1,24 +1,25 @@
 /********************************************************************************
-** Form generated from reading UI file 'panelPXMvyr.ui'
+** Form generated from reading UI file 'panelIhRUPe.ui'
 **
 ** Created by: Qt User Interface Compiler version 5.12.8
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
 
-#ifndef PANELPXMVYR_H
-#define PANELPXMVYR_H
+#ifndef PANELIHRUPE_H
+#define PANELIHRUPE_H
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QCheckBox>
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QDoubleSpinBox>
-#include <QtWidgets/QFrame>
+#include <QtWidgets/QGridLayout>
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
+#include <QtWidgets/QListWidget>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
@@ -27,6 +28,7 @@
 #include <QtWidgets/QTabWidget>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
+#include <qcustomplot.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -38,8 +40,8 @@ public:
     QVBoxLayout *verticalLayout;
     QTabWidget *tabWidget;
     QWidget *eeg_tab;
-    QHBoxLayout *horizontalLayout_2;
-    QVBoxLayout *verticalLayout_2;
+    QGridLayout *gridLayout_8;
+    QGridLayout *gridLayout;
     QGroupBox *groupBox;
     QVBoxLayout *verticalLayout_3;
     QComboBox *ScaleValue;
@@ -54,19 +56,31 @@ public:
     QComboBox *ReferenceValue;
     QComboBox *ReferenceOpt;
     QGroupBox *groupBox_4;
-    QVBoxLayout *verticalLayout_8;
-    QFrame *frame;
-    QVBoxLayout *verticalLayout_7;
-    QGroupBox *groupBox_5;
-    QLineEdit *TopicValue;
-    QPushButton *TopicButton;
-    QGroupBox *groupBox_6;
-    QLabel *NativeRateLabel;
-    QGroupBox *groupBox_7;
-    QLabel *MessageRateLabel;
-    QGroupBox *groupBox_8;
-    QComboBox *TimeWindowValue;
+    QVBoxLayout *verticalLayout_6;
+    QListWidget *ChannelsList;
+    QGridLayout *gridLayout_2;
     QSpacerItem *verticalSpacer;
+    QGroupBox *groupBox_7;
+    QGridLayout *gridLayout_5;
+    QLabel *MessageRateLabel;
+    QGroupBox *groupBox_9;
+    QGridLayout *gridLayout_6;
+    QLabel *MessageSeqLabel;
+    QGroupBox *groupBox_8;
+    QGridLayout *gridLayout_7;
+    QComboBox *TimeWindowValue;
+    QGroupBox *groupBox_6;
+    QGridLayout *gridLayout_4;
+    QLabel *NativeRateLabel;
+    QGroupBox *groupBox_5;
+    QGridLayout *gridLayout_3;
+    QLineEdit *TopicValue;
+    QLabel *label;
+    QLabel *TopicStatus;
+    QPushButton *TopicButton;
+    QGroupBox *groupBox_10;
+    QPushButton *infoButton;
+    QCustomPlot *eegScope;
     QWidget *tab_2;
     QMenuBar *menubar;
     QStatusBar *statusbar;
@@ -97,10 +111,11 @@ public:
         tabWidget->setStyleSheet(QString::fromUtf8("background-color: rgb(238, 238, 236);"));
         eeg_tab = new QWidget();
         eeg_tab->setObjectName(QString::fromUtf8("eeg_tab"));
-        horizontalLayout_2 = new QHBoxLayout(eeg_tab);
-        horizontalLayout_2->setObjectName(QString::fromUtf8("horizontalLayout_2"));
-        verticalLayout_2 = new QVBoxLayout();
-        verticalLayout_2->setObjectName(QString::fromUtf8("verticalLayout_2"));
+        gridLayout_8 = new QGridLayout(eeg_tab);
+        gridLayout_8->setObjectName(QString::fromUtf8("gridLayout_8"));
+        gridLayout = new QGridLayout();
+        gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
+        gridLayout->setContentsMargins(-1, -1, 0, -1);
         groupBox = new QGroupBox(eeg_tab);
         groupBox->setObjectName(QString::fromUtf8("groupBox"));
         groupBox->setEnabled(true);
@@ -139,7 +154,7 @@ public:
         verticalLayout_3->addWidget(ScaleValue);
 
 
-        verticalLayout_2->addWidget(groupBox);
+        gridLayout->addWidget(groupBox, 0, 0, 1, 1);
 
         groupBox_2 = new QGroupBox(eeg_tab);
         groupBox_2->setObjectName(QString::fromUtf8("groupBox_2"));
@@ -168,7 +183,7 @@ public:
         verticalLayout_4->addWidget(HighPassValue);
 
 
-        verticalLayout_2->addWidget(groupBox_2);
+        gridLayout->addWidget(groupBox_2, 1, 0, 1, 1);
 
         groupBox_3 = new QGroupBox(eeg_tab);
         groupBox_3->setObjectName(QString::fromUtf8("groupBox_3"));
@@ -193,99 +208,95 @@ public:
         verticalLayout_5->addWidget(ReferenceOpt);
 
 
-        verticalLayout_2->addWidget(groupBox_3);
+        gridLayout->addWidget(groupBox_3, 2, 0, 1, 1);
 
         groupBox_4 = new QGroupBox(eeg_tab);
         groupBox_4->setObjectName(QString::fromUtf8("groupBox_4"));
-        QSizePolicy sizePolicy3(QSizePolicy::Preferred, QSizePolicy::Preferred);
+        QSizePolicy sizePolicy3(QSizePolicy::Fixed, QSizePolicy::Expanding);
         sizePolicy3.setHorizontalStretch(0);
         sizePolicy3.setVerticalStretch(0);
         sizePolicy3.setHeightForWidth(groupBox_4->sizePolicy().hasHeightForWidth());
         groupBox_4->setSizePolicy(sizePolicy3);
-
-        verticalLayout_2->addWidget(groupBox_4);
-
-
-        horizontalLayout_2->addLayout(verticalLayout_2);
-
-        verticalLayout_8 = new QVBoxLayout();
-        verticalLayout_8->setObjectName(QString::fromUtf8("verticalLayout_8"));
-        verticalLayout_8->setSizeConstraint(QLayout::SetDefaultConstraint);
-        frame = new QFrame(eeg_tab);
-        frame->setObjectName(QString::fromUtf8("frame"));
+        groupBox_4->setMinimumSize(QSize(119, 0));
+        groupBox_4->setMaximumSize(QSize(119, 16777215));
+        verticalLayout_6 = new QVBoxLayout(groupBox_4);
+        verticalLayout_6->setObjectName(QString::fromUtf8("verticalLayout_6"));
+        ChannelsList = new QListWidget(groupBox_4);
+        ChannelsList->setObjectName(QString::fromUtf8("ChannelsList"));
         QSizePolicy sizePolicy4(QSizePolicy::Expanding, QSizePolicy::Preferred);
         sizePolicy4.setHorizontalStretch(0);
         sizePolicy4.setVerticalStretch(0);
-        sizePolicy4.setHeightForWidth(frame->sizePolicy().hasHeightForWidth());
-        frame->setSizePolicy(sizePolicy4);
-        frame->setStyleSheet(QString::fromUtf8("background-color: rgb(255, 255, 255);"));
-        frame->setFrameShape(QFrame::StyledPanel);
-        frame->setFrameShadow(QFrame::Raised);
+        sizePolicy4.setHeightForWidth(ChannelsList->sizePolicy().hasHeightForWidth());
+        ChannelsList->setSizePolicy(sizePolicy4);
+        ChannelsList->setMinimumSize(QSize(0, 20));
+        ChannelsList->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+        ChannelsList->setSizeAdjustPolicy(QAbstractScrollArea::AdjustIgnored);
+        ChannelsList->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
-        verticalLayout_8->addWidget(frame);
+        verticalLayout_6->addWidget(ChannelsList);
 
 
-        horizontalLayout_2->addLayout(verticalLayout_8);
+        gridLayout->addWidget(groupBox_4, 3, 0, 1, 1);
 
-        verticalLayout_7 = new QVBoxLayout();
-        verticalLayout_7->setObjectName(QString::fromUtf8("verticalLayout_7"));
-        groupBox_5 = new QGroupBox(eeg_tab);
-        groupBox_5->setObjectName(QString::fromUtf8("groupBox_5"));
-        QSizePolicy sizePolicy5(QSizePolicy::Preferred, QSizePolicy::Fixed);
-        sizePolicy5.setHorizontalStretch(0);
-        sizePolicy5.setVerticalStretch(0);
-        sizePolicy5.setHeightForWidth(groupBox_5->sizePolicy().hasHeightForWidth());
-        groupBox_5->setSizePolicy(sizePolicy5);
-        groupBox_5->setMinimumSize(QSize(150, 95));
-        groupBox_5->setMaximumSize(QSize(0, 16777215));
-        TopicValue = new QLineEdit(groupBox_5);
-        TopicValue->setObjectName(QString::fromUtf8("TopicValue"));
-        TopicValue->setGeometry(QRect(10, 30, 131, 25));
-        TopicValue->setFocusPolicy(Qt::StrongFocus);
-        TopicValue->setStyleSheet(QString::fromUtf8("background-color: rgb(255, 255, 255);"));
-        TopicButton = new QPushButton(groupBox_5);
-        TopicButton->setObjectName(QString::fromUtf8("TopicButton"));
-        TopicButton->setGeometry(QRect(10, 60, 131, 25));
-        sizePolicy.setHeightForWidth(TopicButton->sizePolicy().hasHeightForWidth());
-        TopicButton->setSizePolicy(sizePolicy);
-        TopicButton->setCheckable(false);
-        TopicButton->setChecked(false);
 
-        verticalLayout_7->addWidget(groupBox_5, 0, Qt::AlignTop);
+        gridLayout_8->addLayout(gridLayout, 0, 0, 1, 1);
 
-        groupBox_6 = new QGroupBox(eeg_tab);
-        groupBox_6->setObjectName(QString::fromUtf8("groupBox_6"));
-        QSizePolicy sizePolicy6(QSizePolicy::Preferred, QSizePolicy::Expanding);
-        sizePolicy6.setHorizontalStretch(0);
-        sizePolicy6.setVerticalStretch(0);
-        sizePolicy6.setHeightForWidth(groupBox_6->sizePolicy().hasHeightForWidth());
-        groupBox_6->setSizePolicy(sizePolicy6);
-        groupBox_6->setMaximumSize(QSize(16777215, 60));
-        NativeRateLabel = new QLabel(groupBox_6);
-        NativeRateLabel->setObjectName(QString::fromUtf8("NativeRateLabel"));
-        NativeRateLabel->setGeometry(QRect(10, 30, 131, 20));
-        NativeRateLabel->setAlignment(Qt::AlignCenter);
+        gridLayout_2 = new QGridLayout();
+        gridLayout_2->setObjectName(QString::fromUtf8("gridLayout_2"));
+        verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
-        verticalLayout_7->addWidget(groupBox_6);
+        gridLayout_2->addItem(verticalSpacer, 6, 0, 1, 1);
 
         groupBox_7 = new QGroupBox(eeg_tab);
         groupBox_7->setObjectName(QString::fromUtf8("groupBox_7"));
-        sizePolicy6.setHeightForWidth(groupBox_7->sizePolicy().hasHeightForWidth());
-        groupBox_7->setSizePolicy(sizePolicy6);
+        QSizePolicy sizePolicy5(QSizePolicy::Preferred, QSizePolicy::Expanding);
+        sizePolicy5.setHorizontalStretch(0);
+        sizePolicy5.setVerticalStretch(0);
+        sizePolicy5.setHeightForWidth(groupBox_7->sizePolicy().hasHeightForWidth());
+        groupBox_7->setSizePolicy(sizePolicy5);
         groupBox_7->setMaximumSize(QSize(16777215, 60));
+        gridLayout_5 = new QGridLayout(groupBox_7);
+        gridLayout_5->setObjectName(QString::fromUtf8("gridLayout_5"));
         MessageRateLabel = new QLabel(groupBox_7);
         MessageRateLabel->setObjectName(QString::fromUtf8("MessageRateLabel"));
-        MessageRateLabel->setGeometry(QRect(10, 30, 131, 20));
+        QSizePolicy sizePolicy6(QSizePolicy::Preferred, QSizePolicy::Preferred);
+        sizePolicy6.setHorizontalStretch(0);
+        sizePolicy6.setVerticalStretch(0);
+        sizePolicy6.setHeightForWidth(MessageRateLabel->sizePolicy().hasHeightForWidth());
+        MessageRateLabel->setSizePolicy(sizePolicy6);
         MessageRateLabel->setAlignment(Qt::AlignCenter);
 
-        verticalLayout_7->addWidget(groupBox_7);
+        gridLayout_5->addWidget(MessageRateLabel, 0, 0, 1, 1);
+
+
+        gridLayout_2->addWidget(groupBox_7, 2, 0, 1, 1);
+
+        groupBox_9 = new QGroupBox(eeg_tab);
+        groupBox_9->setObjectName(QString::fromUtf8("groupBox_9"));
+        sizePolicy5.setHeightForWidth(groupBox_9->sizePolicy().hasHeightForWidth());
+        groupBox_9->setSizePolicy(sizePolicy5);
+        groupBox_9->setMaximumSize(QSize(16777215, 60));
+        gridLayout_6 = new QGridLayout(groupBox_9);
+        gridLayout_6->setObjectName(QString::fromUtf8("gridLayout_6"));
+        MessageSeqLabel = new QLabel(groupBox_9);
+        MessageSeqLabel->setObjectName(QString::fromUtf8("MessageSeqLabel"));
+        sizePolicy6.setHeightForWidth(MessageSeqLabel->sizePolicy().hasHeightForWidth());
+        MessageSeqLabel->setSizePolicy(sizePolicy6);
+        MessageSeqLabel->setAlignment(Qt::AlignCenter);
+
+        gridLayout_6->addWidget(MessageSeqLabel, 0, 0, 1, 1);
+
+
+        gridLayout_2->addWidget(groupBox_9, 3, 0, 1, 1);
 
         groupBox_8 = new QGroupBox(eeg_tab);
         groupBox_8->setObjectName(QString::fromUtf8("groupBox_8"));
-        sizePolicy3.setHeightForWidth(groupBox_8->sizePolicy().hasHeightForWidth());
-        groupBox_8->setSizePolicy(sizePolicy3);
+        sizePolicy6.setHeightForWidth(groupBox_8->sizePolicy().hasHeightForWidth());
+        groupBox_8->setSizePolicy(sizePolicy6);
         groupBox_8->setMinimumSize(QSize(0, 69));
         groupBox_8->setMaximumSize(QSize(16777215, 16777215));
+        gridLayout_7 = new QGridLayout(groupBox_8);
+        gridLayout_7->setObjectName(QString::fromUtf8("gridLayout_7"));
         TimeWindowValue = new QComboBox(groupBox_8);
         TimeWindowValue->addItem(QString());
         TimeWindowValue->addItem(QString());
@@ -294,17 +305,90 @@ public:
         TimeWindowValue->addItem(QString());
         TimeWindowValue->addItem(QString());
         TimeWindowValue->setObjectName(QString::fromUtf8("TimeWindowValue"));
-        TimeWindowValue->setGeometry(QRect(10, 30, 131, 25));
         TimeWindowValue->setStyleSheet(QString::fromUtf8("selection-background-color: rgb(136, 138, 133);"));
 
-        verticalLayout_7->addWidget(groupBox_8);
-
-        verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
-
-        verticalLayout_7->addItem(verticalSpacer);
+        gridLayout_7->addWidget(TimeWindowValue, 0, 0, 1, 1);
 
 
-        horizontalLayout_2->addLayout(verticalLayout_7);
+        gridLayout_2->addWidget(groupBox_8, 4, 0, 1, 1);
+
+        groupBox_6 = new QGroupBox(eeg_tab);
+        groupBox_6->setObjectName(QString::fromUtf8("groupBox_6"));
+        sizePolicy5.setHeightForWidth(groupBox_6->sizePolicy().hasHeightForWidth());
+        groupBox_6->setSizePolicy(sizePolicy5);
+        groupBox_6->setMaximumSize(QSize(16777215, 60));
+        gridLayout_4 = new QGridLayout(groupBox_6);
+        gridLayout_4->setObjectName(QString::fromUtf8("gridLayout_4"));
+        NativeRateLabel = new QLabel(groupBox_6);
+        NativeRateLabel->setObjectName(QString::fromUtf8("NativeRateLabel"));
+        NativeRateLabel->setAlignment(Qt::AlignCenter);
+
+        gridLayout_4->addWidget(NativeRateLabel, 0, 0, 1, 1);
+
+
+        gridLayout_2->addWidget(groupBox_6, 1, 0, 1, 1);
+
+        groupBox_5 = new QGroupBox(eeg_tab);
+        groupBox_5->setObjectName(QString::fromUtf8("groupBox_5"));
+        QSizePolicy sizePolicy7(QSizePolicy::Preferred, QSizePolicy::Fixed);
+        sizePolicy7.setHorizontalStretch(0);
+        sizePolicy7.setVerticalStretch(0);
+        sizePolicy7.setHeightForWidth(groupBox_5->sizePolicy().hasHeightForWidth());
+        groupBox_5->setSizePolicy(sizePolicy7);
+        groupBox_5->setMinimumSize(QSize(150, 118));
+        groupBox_5->setMaximumSize(QSize(0, 16777215));
+        gridLayout_3 = new QGridLayout(groupBox_5);
+        gridLayout_3->setObjectName(QString::fromUtf8("gridLayout_3"));
+        TopicValue = new QLineEdit(groupBox_5);
+        TopicValue->setObjectName(QString::fromUtf8("TopicValue"));
+        TopicValue->setFocusPolicy(Qt::StrongFocus);
+        TopicValue->setStyleSheet(QString::fromUtf8("background-color: rgb(255, 255, 255);"));
+
+        gridLayout_3->addWidget(TopicValue, 0, 0, 1, 2);
+
+        label = new QLabel(groupBox_5);
+        label->setObjectName(QString::fromUtf8("label"));
+
+        gridLayout_3->addWidget(label, 1, 0, 1, 1);
+
+        TopicStatus = new QLabel(groupBox_5);
+        TopicStatus->setObjectName(QString::fromUtf8("TopicStatus"));
+
+        gridLayout_3->addWidget(TopicStatus, 1, 1, 1, 1);
+
+        TopicButton = new QPushButton(groupBox_5);
+        TopicButton->setObjectName(QString::fromUtf8("TopicButton"));
+        TopicButton->setEnabled(true);
+        sizePolicy.setHeightForWidth(TopicButton->sizePolicy().hasHeightForWidth());
+        TopicButton->setSizePolicy(sizePolicy);
+        TopicButton->setCheckable(false);
+        TopicButton->setChecked(false);
+
+        gridLayout_3->addWidget(TopicButton, 2, 0, 1, 2);
+
+
+        gridLayout_2->addWidget(groupBox_5, 0, 0, 1, 1);
+
+        groupBox_10 = new QGroupBox(eeg_tab);
+        groupBox_10->setObjectName(QString::fromUtf8("groupBox_10"));
+        groupBox_10->setMinimumSize(QSize(0, 69));
+        infoButton = new QPushButton(groupBox_10);
+        infoButton->setObjectName(QString::fromUtf8("infoButton"));
+        infoButton->setGeometry(QRect(17, 33, 126, 25));
+
+        gridLayout_2->addWidget(groupBox_10, 5, 0, 1, 1);
+
+
+        gridLayout_8->addLayout(gridLayout_2, 0, 3, 1, 1);
+
+        eegScope = new QCustomPlot(eeg_tab);
+        eegScope->setObjectName(QString::fromUtf8("eegScope"));
+        sizePolicy.setHeightForWidth(eegScope->sizePolicy().hasHeightForWidth());
+        eegScope->setSizePolicy(sizePolicy);
+        eegScope->setMinimumSize(QSize(0, 0));
+        eegScope->setStyleSheet(QString::fromUtf8("background-color: rgb(255, 255, 255);"));
+
+        gridLayout_8->addWidget(eegScope, 0, 2, 1, 1);
 
         tabWidget->addTab(eeg_tab, QString());
         tab_2 = new QWidget();
@@ -374,12 +458,10 @@ public:
         ReferenceValue->setItemText(3, QApplication::translate("NeuroVizPanel", "Bipole", nullptr));
 
         groupBox_4->setTitle(QApplication::translate("NeuroVizPanel", "Electrodes", nullptr));
-        groupBox_5->setTitle(QApplication::translate("NeuroVizPanel", "Topic", nullptr));
-        TopicButton->setText(QApplication::translate("NeuroVizPanel", "Run", nullptr));
-        groupBox_6->setTitle(QApplication::translate("NeuroVizPanel", "Native rate:", nullptr));
-        NativeRateLabel->setText(QApplication::translate("NeuroVizPanel", "0 Hz", nullptr));
         groupBox_7->setTitle(QApplication::translate("NeuroVizPanel", "Message rate:", nullptr));
-        MessageRateLabel->setText(QApplication::translate("NeuroVizPanel", "0 Hz", nullptr));
+        MessageRateLabel->setText(QApplication::translate("NeuroVizPanel", "~ Hz", nullptr));
+        groupBox_9->setTitle(QApplication::translate("NeuroVizPanel", "Message sequence:", nullptr));
+        MessageSeqLabel->setText(QApplication::translate("NeuroVizPanel", "0", nullptr));
         groupBox_8->setTitle(QApplication::translate("NeuroVizPanel", "Time window:", nullptr));
         TimeWindowValue->setItemText(0, QApplication::translate("NeuroVizPanel", "1 s", nullptr));
         TimeWindowValue->setItemText(1, QApplication::translate("NeuroVizPanel", "2 s", nullptr));
@@ -388,6 +470,15 @@ public:
         TimeWindowValue->setItemText(4, QApplication::translate("NeuroVizPanel", "20 s", nullptr));
         TimeWindowValue->setItemText(5, QApplication::translate("NeuroVizPanel", "30 s", nullptr));
 
+        groupBox_6->setTitle(QApplication::translate("NeuroVizPanel", "Native rate:", nullptr));
+        NativeRateLabel->setText(QApplication::translate("NeuroVizPanel", "~ Hz", nullptr));
+        groupBox_5->setTitle(QApplication::translate("NeuroVizPanel", "Topic", nullptr));
+        TopicValue->setText(QApplication::translate("NeuroVizPanel", "/neurodata", nullptr));
+        label->setText(QApplication::translate("NeuroVizPanel", "Status:", nullptr));
+        TopicStatus->setText(QApplication::translate("NeuroVizPanel", "Idle", nullptr));
+        TopicButton->setText(QApplication::translate("NeuroVizPanel", "Stop", nullptr));
+        groupBox_10->setTitle(QApplication::translate("NeuroVizPanel", "Data info:", nullptr));
+        infoButton->setText(QApplication::translate("NeuroVizPanel", "info", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(eeg_tab), QApplication::translate("NeuroVizPanel", "EEG", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tab_2), QApplication::translate("NeuroVizPanel", "EXG", nullptr));
     } // retranslateUi
@@ -400,5 +491,4 @@ namespace Ui {
 
 QT_END_NAMESPACE
 
-#endif // PANELPXMVYR_H
-
+#endif // PANELIHRUPE_H

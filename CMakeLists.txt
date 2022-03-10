@@ -26,7 +26,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 #SET(CMAKE_AUTOUIC ON)
 
-find_package(Qt5 COMPONENTS Core Gui Widgets)
+find_package(Qt5 COMPONENTS Core Gui Widgets QCustomPlot)
 
 ##############################################################################
 # Sections
@@ -54,11 +54,14 @@ add_definitions( -std=c++11 -fPIC)
 
 set( QT_SOURCES
 	src/MainWindow.cpp
-	src/NeuroDataManagement.cpp
+	src/DataThread.cpp
+	src/DataPlot.cpp
 	src/neuroviz.cpp
     src/ui_panel.h
+    src/ui_dialog_info.h
     include/rosneuro_visualizer/MainWindow.hpp
-	include/rosneuro_visualizer/NeuroDataManagement.hpp
+	include/rosneuro_visualizer/DataThread.hpp
+	include/rosneuro_visualizer/DataPlot.hpp
     )
 
 ##############################################################################
@@ -70,4 +73,5 @@ target_link_libraries(neuroviz
     ${catkin_LIBRARIES}
     Qt5::Core
     Qt5::Widgets
+	qcustomplot
 )
