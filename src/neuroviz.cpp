@@ -1,5 +1,6 @@
 #include <ros/ros.h>
 #include "rosneuro_visualizer/MainWindow.hpp"
+#include "rosneuro_msgs/NeuroDataFloat.h"
 
 
 int main(int argc, char** argv) {
@@ -10,6 +11,7 @@ int main(int argc, char** argv) {
 	// ros initialization
 	ros::init(argc, argv, "neuroviz");
 
+	qRegisterMetaType<std::vector<float>>();
 	qRegisterMetaType<QList<QString>>();
 	MainWindow window;
 

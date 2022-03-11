@@ -23,7 +23,7 @@ MainWindow::MainWindow(QWidget *parent) :  QMainWindow(parent),
 	QObject::connect(&(this->thread_),&DataThread::sig_info_data,this,&MainWindow::on_InfoData);
 	QObject::connect(&(this->thread_),&DataThread::sig_info_message_sequence,this, &MainWindow::on_InfoMessageSequence);
 	QObject::connect(&(this->thread_),&DataThread::sig_info_message_rate,this, &MainWindow::on_InfoMessageRate);
-	QObject::connect(&(this->thread_),&DataThread::sig_data_new,this, &MainWindow::on_NewData);
+	QObject::connect(&(this->thread_),&DataThread::sig_data_available,this, &MainWindow::on_DataAvailable);
 }
 
 MainWindow::~MainWindow(void) {
@@ -67,6 +67,8 @@ void MainWindow::on_InfoSamplerate(unsigned int samplerate) {
 		qsamplerate = QString::number(samplerate);
 
 	this->ui_->NativeRateLabel->setText(qsamplerate + " Hz");
+	this->max_buffer_size_ = samplerate * this->max_time_window_;
+	this->samplerate_ = samplerate;
 }
 
 void MainWindow::on_InfoMessageSequence(unsigned int sequence) {
@@ -92,14 +94,46 @@ void MainWindow::on_InfoChannels(QList<QString> labels) {
 
 	this->NumChannels_shown_ = this->LbChannels_.size();
 	this->LbChannels_shown_  = labels;
+
+	// TEMP
+	this->buffer_.reset(this->max_buffer_size_, this->LbChannels_.size());
 }
 
 void MainWindow::on_InfoData(QString info) {
 	this->data_info_ = info;
 }
 
-void MainWindow::on_NewData(void) {
-	this->data_plot_.draw(this->NumChannels_shown_, this->LbChannels_shown_);
+void MainWindow::on_DataAvailable(std::vector<float> data) {
+
+	//unsigned int nchannels = this->LbChannels_.size();
+	//unsigned int nsamples  = data.size()/nchannels;
+
+	//// Update internal buffer
+
+	//printf("Data size: %d\n", data.size());
+	//printf("NumChannels: %d\n", nchannels);
+	//printf("Samples: %d\n", nsamples);
+	//unsigned int cstart, cstop;
+	//for(auto i=0; i<data.size(); i=i+nchannels) {
+	//	cstart = i;
+	//	cstop  = i+ nchannels - 1;
+	//	printf("[%d %d]\n", cstart, cstop); 
+	//	std::vector<float> tvect = {data.begin() + cstart, data.begin() + cstop}; 
+	//	this->buffer_.push_back(tvect);
+	//}
+
+	//printf("Buffer size: %d\n", this->buffer_.size());
+	//while(this->buffer_.size() > this->max_buffer_size_)
+	//	this->buffer_.pop_front();
+
+	////this->buffer_.push_back(data.data);
+	
+	this->buffer_.add(data);	
+
+
+
+	//this->data_plot_.draw(this->NumChannels_shown_, this->LbChannels_shown_);
+	this->data_plot_.draw2(this->buffer_, this->NumChannels_shown_, this->LbChannels_shown_);
 }
 
 void MainWindow::on_ChannelsChanged(void) {

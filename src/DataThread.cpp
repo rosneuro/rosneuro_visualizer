@@ -47,7 +47,7 @@ void DataThread::stopThread(void) {
 
 void DataThread::run(void) {
 
-	ros::Rate r(2048);
+	ros::Rate r(4096);
 	while(this->nh_.ok()) {
 
 		//printf("Thread running...\n");
@@ -102,11 +102,11 @@ void DataThread::on_received_data(const rosneuro_msgs::NeuroFrame& msg) {
 
 	// Estimate and set message rate signal
 	float msg_rate;
-	msg_rate = this->estimate_message_rate(msg.header.stamp.nsec);
+	msg_rate = this->estimate_message_rate(ros::Time::now().toSec());
 	this->set_message_rate(msg_rate);
 
 	// Emit signal new data
-	emit sig_data_new();
+	emit sig_data_available(msg.eeg.data);
 }
 
 void DataThread::set_samplerate(unsigned int samplerate) {
@@ -123,7 +123,7 @@ void DataThread::set_message_rate(float rate) {
 	emit sig_info_message_rate(rate);
 }
 
-float DataThread::estimate_message_rate(int nsecs) {
+float DataThread::estimate_message_rate(double nsecs) {
 
 	if(this->mr_nsecs_.size() >= this->mr_queue_length_) {
 		this->mr_nsecs_.pop_front();
@@ -136,15 +136,20 @@ float DataThread::estimate_message_rate(int nsecs) {
 	}
 
 	float rate;
-	float difference  = 0;
+	double difference  = 0;
+	double mdifference;
 	
-	for(auto it = this->mr_nsecs_.begin(); it != std::prev(this->mr_nsecs_.end()); ++it) {
-		//difference += std::abs(*it - *std::next(it));
-		difference += *it - *std::next(it);
-	}
-	difference /= (this->mr_queue_length_ - 1);
+	//for(auto it = this->mr_nsecs_.begin(); it != std::prev(this->mr_nsecs_.end()); ++it) {
+	//	//difference += std::abs(*it - *std::next(it));
+	//	difference += *(std::next(it)) - *it;
+	//}
 
-	rate = std::abs(1000000000.0/difference);
+	for(auto i = 1; i<this->mr_nsecs_.size(); i++) {
+		difference += (this->mr_nsecs_.at(i) - this->mr_nsecs_.at(i-1));
+	}
+	mdifference = difference/(this->mr_nsecs_.size() - 1);
+
+	rate = 1.0/mdifference;
 	return rate;
 }
 

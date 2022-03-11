@@ -33,7 +33,7 @@ class DataThread : public QThread {
 		void sig_info_data(QString info);
 		void sig_info_message_sequence(unsigned int sequence);
 		void sig_info_message_rate(float rate);
-		void sig_data_new(void);
+		void sig_data_available(std::vector<float> data);
 
 	private:
 		void on_received_data(const rosneuro_msgs::NeuroFrame& msg);
@@ -42,7 +42,7 @@ class DataThread : public QThread {
 		void set_message_rate(float rate);
 		void set_channels(std::vector<std::string> labels);
 		void set_data_info(const rosneuro_msgs::NeuroDataInfo& info);
-		float estimate_message_rate(int nsecs);
+		float estimate_message_rate(double nsecs);
 	
 	private:
 		ros::NodeHandle		nh_;
@@ -52,7 +52,7 @@ class DataThread : public QThread {
 		unsigned int 		samplerate_;
 		unsigned int 		sequence_;
 		const int 			mr_queue_length_ = 100;
-		std::deque<int> 	mr_nsecs_;
+		std::deque<double> 	mr_nsecs_;
 		QList<QString>		channels_labels_;
 		QString 			data_info_;
 		QMutex 			mutex_;
@@ -63,6 +63,5 @@ class DataThread : public QThread {
 
 		
 };
-
 
 #endif

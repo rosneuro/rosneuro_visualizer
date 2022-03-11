@@ -1,18 +1,21 @@
-#ifndef DATA_PLOT_HPP
-#define DATA_PLOT_HPP
+#ifndef DATA_PANEL_HPP
+#define DATA_PANEL_HPP
 
 #include <qcustomplot.h>
+#include "rosneuro_visualizer/Buffer.hpp"
 
 
-class DataPlot {
+class DataPanel {
 
 	public:
-		DataPlot(void);
-		virtual ~DataPlot(void);
+		DataPanel(void);
+		virtual ~DataPanel(void);
 
 		void setup(QCustomPlot* plot);
 		void draw(unsigned int nchannels, const QList<QString>& labels);
+		void draw2(const Buffer& buffer, unsigned int nchannels, const QList<QString>& labels);
 
+		double remap(double value, double scale);
 
 	private:
 		QCustomPlot* qplot_;
