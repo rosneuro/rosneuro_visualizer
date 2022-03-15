@@ -91,6 +91,9 @@
                  <property name="styleSheet">
                   <string notr="true">selection-background-color: rgb(136, 138, 133);</string>
                  </property>
+                 <property name="currentIndex">
+                  <number>5</number>
+                 </property>
                  <item>
                   <property name="text">
                    <string>1 uV</string>
@@ -427,6 +430,9 @@
                  <property name="styleSheet">
                   <string notr="true">selection-background-color: rgb(136, 138, 133);</string>
                  </property>
+                 <property name="currentIndex">
+                  <number>3</number>
+                 </property>
                  <item>
                   <property name="text">
                    <string>1 s</string>
@@ -580,7 +586,7 @@
               <property name="title">
                <string>Data info:</string>
               </property>
-              <widget class="QPushButton" name="infoButton">
+              <widget class="QPushButton" name="InfoButton">
                <property name="geometry">
                 <rect>
                  <x>17</x>
@@ -598,7 +604,7 @@
            </layout>
           </item>
           <item row="0" column="2">
-           <widget class="QCustomPlot" name="eegScope" native="true">
+           <widget class="ScopePanel" name="eegScope" native="true">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
               <horstretch>0</horstretch>
@@ -646,9 +652,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>QCustomPlot</class>
+   <class>ScopePanel</class>
    <extends>QWidget</extends>
-   <header location="global">qcustomplot.h</header>
+   <header>rosneuro_visualizer/ScopePanel.hpp</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

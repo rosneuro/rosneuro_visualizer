@@ -57,8 +57,8 @@ bool Buffer::add(const std::vector<float>& data) {
 	// Getting this data and save it in the deque structure
 	for(auto i = 0; i < nelems; i = i + data_nchannels) {
 		std::vector<float> cvector = {data.begin() + i, data.begin() + i + data_nchannels};
-		printf("[%d %d]\n", i, i + data_nchannels - 1);	
-		printf("%ld\n", cvector.size());	
+		//printf("[%d %d]\n", i, i + data_nchannels - 1);	
+		//printf("%ld\n", cvector.size());	
 		unsigned int chId = 0;
 		for(auto it=cvector.begin(); it!=cvector.end(); ++it) {
 

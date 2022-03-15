@@ -7,7 +7,7 @@
 #include "src/ui_panel.h"
 #include "src/ui_dialog_info.h"
 #include "rosneuro_visualizer/DataThread.hpp"
-#include "rosneuro_visualizer/DataPanel.hpp"
+#include "rosneuro_visualizer/ScopePanel.hpp"
 #include "rosneuro_visualizer/Buffer.hpp"
 
 namespace Ui {
@@ -26,29 +26,36 @@ class MainWindow : public QMainWindow {
 		void on_TopicButton(void);
 		void on_InfoButton(void);
 		void on_TopicValueChanged(void);
-		void on_InfoSamplerate(unsigned int samplerate);
-		void on_InfoChannels(QList<QString> labels);
-		void on_InfoData(QString info);
-		void on_InfoMessageSequence(unsigned int sequence);
-		void on_InfoMessageRate(float rate);
-		void on_DataAvailable(std::vector<float> data);
 		void on_ChannelsChanged(void);
+		void on_ScaleChanged(void);
+		void on_WindowChanged(void);
+		
+		void on_DataInfo(float samplerate, unsigned int nchannels, QList<QString> labels, QString info);
+		void on_MessageInfo(unsigned int sequence, float rate);
+		void on_DataAvailable(std::vector<float> data);
+		
+		void ui_set_samplerate(float samplerate);
+		void ui_set_channels(const QList<QString>& labels);
+		void ui_set_info(const QString& info);
 
 	private:
 		
 	private:
 		Ui::NeuroVizPanel* 	ui_;
 		DataThread 			thread_;
-		QString 			data_info_;
-		DataPanel			data_plot_;
+		
+		ScopePanel*			scope_;
 		Buffer				buffer_;
-		unsigned int 		max_buffer_size_;
-		const unsigned int	max_time_window_ = 20;
-		unsigned int 		samplerate_;
+		unsigned int		window_size_ = 10;
+		float				samplerate_;
 
-		QList<QString>		LbChannels_;
-		unsigned int		NumChannels_shown_;
-		QList<QString>		LbChannels_shown_;
+		QVector<int>		channel_index_selected_;
+		QString				info_;
+		const std::vector<double>	scales_ = {  1.0f,     2.5f,     5.0f,   10.0f, 
+											    25.0f,    50.0f,   100.0f,  250.0f, 
+											   500.0f,  1000.0f,  2500.0f, 5000.0f, 
+											 10000.0f, 25000.0f, 50000.0f};
+		const std::vector<double> 	windows_ = {1.0f, 2.0f, 5.0f, 10.0f, 20.0f, 30.0f};
 
 };
 

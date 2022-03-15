@@ -1,13 +1,13 @@
 /********************************************************************************
-** Form generated from reading UI file 'panelIhRUPe.ui'
+** Form generated from reading UI file 'panelWSbtDR.ui'
 **
 ** Created by: Qt User Interface Compiler version 5.12.8
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
 
-#ifndef PANELIHRUPE_H
-#define PANELIHRUPE_H
+#ifndef PANELWSBTDR_H
+#define PANELWSBTDR_H
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
@@ -28,7 +28,7 @@
 #include <QtWidgets/QTabWidget>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
-#include <qcustomplot.h>
+#include "rosneuro_visualizer/ScopePanel.hpp"
 
 QT_BEGIN_NAMESPACE
 
@@ -79,8 +79,8 @@ public:
     QLabel *TopicStatus;
     QPushButton *TopicButton;
     QGroupBox *groupBox_10;
-    QPushButton *infoButton;
-    QCustomPlot *eegScope;
+    QPushButton *InfoButton;
+    ScopePanel *eegScope;
     QWidget *tab_2;
     QMenuBar *menubar;
     QStatusBar *statusbar;
@@ -372,16 +372,16 @@ public:
         groupBox_10 = new QGroupBox(eeg_tab);
         groupBox_10->setObjectName(QString::fromUtf8("groupBox_10"));
         groupBox_10->setMinimumSize(QSize(0, 69));
-        infoButton = new QPushButton(groupBox_10);
-        infoButton->setObjectName(QString::fromUtf8("infoButton"));
-        infoButton->setGeometry(QRect(17, 33, 126, 25));
+        InfoButton = new QPushButton(groupBox_10);
+        InfoButton->setObjectName(QString::fromUtf8("InfoButton"));
+        InfoButton->setGeometry(QRect(17, 33, 126, 25));
 
         gridLayout_2->addWidget(groupBox_10, 5, 0, 1, 1);
 
 
         gridLayout_8->addLayout(gridLayout_2, 0, 3, 1, 1);
 
-        eegScope = new QCustomPlot(eeg_tab);
+        eegScope = new ScopePanel(eeg_tab);
         eegScope->setObjectName(QString::fromUtf8("eegScope"));
         sizePolicy.setHeightForWidth(eegScope->sizePolicy().hasHeightForWidth());
         eegScope->setSizePolicy(sizePolicy);
@@ -423,6 +423,8 @@ public:
         retranslateUi(NeuroVizPanel);
 
         tabWidget->setCurrentIndex(0);
+        ScaleValue->setCurrentIndex(5);
+        TimeWindowValue->setCurrentIndex(3);
 
 
         QMetaObject::connectSlotsByName(NeuroVizPanel);
@@ -478,7 +480,7 @@ public:
         TopicStatus->setText(QApplication::translate("NeuroVizPanel", "Idle", nullptr));
         TopicButton->setText(QApplication::translate("NeuroVizPanel", "Stop", nullptr));
         groupBox_10->setTitle(QApplication::translate("NeuroVizPanel", "Data info:", nullptr));
-        infoButton->setText(QApplication::translate("NeuroVizPanel", "info", nullptr));
+        InfoButton->setText(QApplication::translate("NeuroVizPanel", "info", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(eeg_tab), QApplication::translate("NeuroVizPanel", "EEG", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tab_2), QApplication::translate("NeuroVizPanel", "EXG", nullptr));
     } // retranslateUi
@@ -491,4 +493,4 @@ namespace Ui {
 
 QT_END_NAMESPACE
 
-#endif // PANELIHRUPE_H
+#endif // PANELWSBTDR_H

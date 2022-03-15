@@ -55,15 +55,19 @@ add_definitions( -std=c++11 -fPIC)
 set( QT_SOURCES
 	src/MainWindow.cpp
 	src/DataThread.cpp
-	src/DataPanel.cpp
+	src/NeuroPanel.cpp
+	src/ScopePanel.cpp
 	src/Buffer.cpp
+	src/Palette.cpp
 	src/neuroviz.cpp
     src/ui_panel.h
     src/ui_dialog_info.h
     include/rosneuro_visualizer/MainWindow.hpp
 	include/rosneuro_visualizer/DataThread.hpp
-	include/rosneuro_visualizer/DataPanel.hpp
+	include/rosneuro_visualizer/NeuroPanel.hpp
+	include/rosneuro_visualizer/ScopePanel.hpp
 	include/rosneuro_visualizer/Buffer.hpp
+	include/rosneuro_visualizer/Palette.hpp
     )
 
 ##############################################################################
