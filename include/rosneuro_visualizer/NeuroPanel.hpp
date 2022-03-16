@@ -3,7 +3,8 @@
 
 #include <qcustomplot.h>
 #include "rosneuro_visualizer/Palette.hpp"
-#include "rosneuro_visualizer/Buffer.hpp"
+//#include "rosneuro_visualizer/Buffer.hpp"
+#include "rosneuro_visualizer/EigenBuffer.hpp"
 
 class Palette;
 
@@ -16,7 +17,8 @@ class NeuroPanel : public QCustomPlot {
 		virtual void set_channel_labels(const QList<QString>& chlabel);
 		virtual void set_scale(double scale);
 		virtual void setup(unsigned int nsamples, unsigned int nchannels) = 0;
-		virtual void draw(const Buffer& buffer, const QVector<int>& chindex) = 0; 
+		//virtual void draw(const Buffer& buffer, const QVector<int>& chindex) = 0; 
+		virtual void draw(const EigenBuffer& buffer, const QVector<int>& chindex) = 0; 
 
 
 	protected:

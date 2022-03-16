@@ -10,7 +10,8 @@ class ScopePanel : public NeuroPanel {
 		virtual ~ScopePanel(void);
 
 		void setup(unsigned int nsamples, unsigned int nchannels);
-		void draw(const Buffer& buffer, const QVector<int>& chindex);
+		//void draw(const Buffer& buffer, const QVector<int>& chindex);
+		void draw(const EigenBuffer& buffer, const QVector<int>& chindex);
 
 		void set_axis_y(unsigned int nchannels);
 		void set_axis_x(unsigned int nsamples);

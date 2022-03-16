@@ -5,6 +5,8 @@ project(rosneuro_visualizer)
 # Catkin
 ##############################################################################
 
+find_package(Eigen3 REQUIRED)
+
 # qt_build provides the qt cmake glue, roscpp the comms for a default talker
 find_package(catkin REQUIRED COMPONENTS 
 			 roscpp 
@@ -12,11 +14,12 @@ find_package(catkin REQUIRED COMPONENTS
 			 rosneuro_data
 			 rosneuro_msgs)
 
-include_directories(include ${catkin_INCLUDE_DIRS})
+include_directories(include ${catkin_INCLUDE_DIRS} ${EIGEN3_INCLUDE_DIRS})
 # Use this to define what the package will export (e.g. libs, headers).
 # Since the default here is to produce only a binary, we don't worry about
 # exporting anything. 
 catkin_package()
+
 
 ##############################################################################
 # Qt Environment
@@ -47,6 +50,7 @@ include_directories(
     )
 
 add_definitions( -std=c++11 -fPIC)
+add_definitions(${EIGEN3_DEFINITIONS})
 
 ##############################################################################
 # Sources
@@ -58,6 +62,7 @@ set( QT_SOURCES
 	src/NeuroPanel.cpp
 	src/ScopePanel.cpp
 	src/Buffer.cpp
+	src/EigenBuffer.cpp
 	src/Palette.cpp
 	src/neuroviz.cpp
     src/ui_panel.h
@@ -67,6 +72,7 @@ set( QT_SOURCES
 	include/rosneuro_visualizer/NeuroPanel.hpp
 	include/rosneuro_visualizer/ScopePanel.hpp
 	include/rosneuro_visualizer/Buffer.hpp
+	include/rosneuro_visualizer/EigenBuffer.hpp
 	include/rosneuro_visualizer/Palette.hpp
     )
 
@@ -74,9 +80,10 @@ set( QT_SOURCES
 # Binaries
 ##############################################################################
 
-add_executable(neuroviz ${QT_SOURCES} ${QT_RESOURCES_CPP} ${QT_FORMS_HPP} ${QT_MOC_HPP})
+add_executable(neuroviz ${Eigen3_LIBRARIES} ${QT_SOURCES} ${QT_RESOURCES_CPP} ${QT_FORMS_HPP} ${QT_MOC_HPP})
 target_link_libraries(neuroviz
     ${catkin_LIBRARIES}
+	${Eigen3_LIBRARIES}
     Qt5::Core
     Qt5::Widgets
 	qcustomplot

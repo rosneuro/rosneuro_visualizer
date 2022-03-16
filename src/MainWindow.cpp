@@ -106,7 +106,7 @@ void MainWindow::on_WindowChanged(void) {
 	unsigned int nsamples  = this->window_size_ * this->samplerate_;
 
 	this->buffer_.reset(nsamples, nchannels);
-	this->scope_->setup(nsamples, nchannels);
+	this->scope_->setup(nsamples, this->channel_index_selected_.size());
 }
 
 void MainWindow::ui_set_samplerate(float samplerate) {

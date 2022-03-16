@@ -3,6 +3,7 @@
 
 ScopePanel::ScopePanel(QWidget* parent) : NeuroPanel(parent) {
 	this->set_scale(50.0f);
+	this->setup(0, 0);
 }
 
 ScopePanel::~ScopePanel(void) {}
@@ -22,6 +23,59 @@ void ScopePanel::setup(unsigned int nsamples, unsigned int nchannels) {
 
 }
 
+void ScopePanel::draw(const EigenBuffer& buffer, const QVector<int>& chindex) {
+
+	unsigned int nchannels = chindex.size();
+	unsigned int nsamples  = buffer.samples();
+	QVector<double> xvalues(nsamples), yvalues(nsamples);
+
+	if(chindex != this->channel_index_) {
+		
+		// Adding graph for the provided channels
+		this->clearGraphs();
+		for(auto i=0; i<chindex.size(); i++)
+			this->addGraph();
+
+		// Adding y-tick considering the provided channels
+		unsigned int chId = 1;
+		for(auto i=0; i<chindex.size(); i++) {
+			this->yticker_->addTick(chId, this->channel_label_.at(chindex.at(nchannels - i - 1)));
+			chId++;
+		}
+		this->set_axis_y(nchannels);
+
+		this->channel_index_ = chindex;
+	}
+	
+	this->set_axis_x(buffer.samples());
+
+	// Create x-values vector
+	for(auto i=0; i<nsamples; i++)
+		xvalues[i] = i;
+	
+	
+	// Create y-values vector
+	unsigned int pIdx = 0;
+	this->palette_.reset();
+	for(auto ch = 0; ch<nchannels; ch++) {
+		unsigned int chInd = chindex.at(ch);
+		for(auto sp = 0; sp<nsamples; sp++) {
+			yvalues[sp] = this->remap(const_cast<EigenBuffer&>(buffer).at(sp, chInd), this->scale_) + nchannels - ch;
+		}
+
+		this->graph(ch)->setData(xvalues, yvalues);
+
+		QColor color = this->palette_.get();
+		this->pengraph_.setColor(color);
+		this->graph(ch)->setPen(this->pengraph_);
+		this->palette_.next();
+	}
+
+	// Plotting the data
+	this->replot();
+}
+
+/*
 void ScopePanel::draw(const Buffer& buffer, const QVector<int>& chindex) {
 
 	unsigned int nchannels = chindex.size();
@@ -52,14 +106,14 @@ void ScopePanel::draw(const Buffer& buffer, const QVector<int>& chindex) {
 	for(auto i=0; i<nsamples; i++)
 		xvalues[i] = i;
 	
-
+	
 	// Create y-values vector
 	unsigned int pIdx = 0;
 	this->palette_.reset();
 	for(auto ch = 0; ch<nchannels; ch++) {
 		unsigned int chInd = chindex.at(ch);
 		for(auto sp = 0; sp<nsamples; sp++) {
-			yvalues[sp] = this->remap(buffer.buffer_.at(chInd).at(sp), this->scale_) + nchannels - ch;
+			yvalues[sp] = this->remap(buffer.get().at(chInd).at(sp), this->scale_) + nchannels - ch;
 		}
 
 		this->graph(ch)->setData(xvalues, yvalues);
@@ -72,7 +126,7 @@ void ScopePanel::draw(const Buffer& buffer, const QVector<int>& chindex) {
 
 	// Plotting the data
 	this->replot();
-}
+}*/
 
 void ScopePanel::set_axis_y(unsigned int nchannels) {
 	this->yAxis->setTicker(this->yticker_);

@@ -76,4 +76,9 @@ bool Buffer::add(const std::vector<float>& data) {
 	return true;
 }
 
+const std::vector<std::vector<float>>& Buffer::get(void) const {
+	return this->buffer_;
+}
+
+
 

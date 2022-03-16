@@ -16,8 +16,9 @@ class Buffer {
 		bool add(const std::vector<float>& data);
 		unsigned int samples(void) const;
 		unsigned int channels(void) const;
+		const std::vector<std::vector<float>>& get(void) const;
 
-	public:
+	private:
 		
 		std::vector<std::vector<float>> 	buffer_;
 		unsigned int	nchannels_;

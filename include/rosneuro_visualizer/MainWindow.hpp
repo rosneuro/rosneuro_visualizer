@@ -9,6 +9,7 @@
 #include "rosneuro_visualizer/DataThread.hpp"
 #include "rosneuro_visualizer/ScopePanel.hpp"
 #include "rosneuro_visualizer/Buffer.hpp"
+#include "rosneuro_visualizer/EigenBuffer.hpp"
 
 namespace Ui {
 class MainWindow;
@@ -45,7 +46,8 @@ class MainWindow : public QMainWindow {
 		DataThread 			thread_;
 		
 		ScopePanel*			scope_;
-		Buffer				buffer_;
+		//Buffer				buffer_;
+		EigenBuffer				buffer_;
 		unsigned int		window_size_ = 10;
 		float				samplerate_;
 
