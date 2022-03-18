@@ -19,7 +19,10 @@ class EigenBuffer {
 		unsigned int channels(void) const;
 		//const std::vector<std::vector<float>>& get(void) const;
 		const void get(const Eigen::Ref<const Eigen::MatrixXf>& out) const;
-		float at(unsigned int row, unsigned int col);
+
+		Eigen::MatrixXf& get(void);
+		const Eigen::MatrixXf& get(void) const;
+		const float at(unsigned int sampleId, unsigned int channelId) const;
 
 	private:
 		

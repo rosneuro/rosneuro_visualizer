@@ -1,13 +1,13 @@
 /********************************************************************************
-** Form generated from reading UI file 'panelWSbtDR.ui'
+** Form generated from reading UI file 'panelsEBjTL.ui'
 **
 ** Created by: Qt User Interface Compiler version 5.12.8
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
 
-#ifndef PANELWSBTDR_H
-#define PANELWSBTDR_H
+#ifndef PANELSEBJTL_H
+#define PANELSEBJTL_H
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
@@ -169,6 +169,8 @@ public:
 
         LowPassValue = new QDoubleSpinBox(groupBox_2);
         LowPassValue->setObjectName(QString::fromUtf8("LowPassValue"));
+        LowPassValue->setMaximum(4096.000000000000000);
+        LowPassValue->setValue(100.000000000000000);
 
         verticalLayout_4->addWidget(LowPassValue);
 
@@ -179,6 +181,8 @@ public:
 
         HighPassValue = new QDoubleSpinBox(groupBox_2);
         HighPassValue->setObjectName(QString::fromUtf8("HighPassValue"));
+        HighPassValue->setMaximum(4096.000000000000000);
+        HighPassValue->setValue(1.000000000000000);
 
         verticalLayout_4->addWidget(HighPassValue);
 
@@ -493,4 +497,4 @@ namespace Ui {
 
 QT_END_NAMESPACE
 
-#endif // PANELWSBTDR_H
+#endif // PANELSEBJTL_H

@@ -194,7 +194,14 @@
                 </widget>
                </item>
                <item>
-                <widget class="QDoubleSpinBox" name="LowPassValue"/>
+                <widget class="QDoubleSpinBox" name="LowPassValue">
+                 <property name="maximum">
+                  <double>4096.000000000000000</double>
+                 </property>
+                 <property name="value">
+                  <double>100.000000000000000</double>
+                 </property>
+                </widget>
                </item>
                <item>
                 <widget class="QCheckBox" name="HighPassCheck">
@@ -204,7 +211,14 @@
                 </widget>
                </item>
                <item>
-                <widget class="QDoubleSpinBox" name="HighPassValue"/>
+                <widget class="QDoubleSpinBox" name="HighPassValue">
+                 <property name="maximum">
+                  <double>4096.000000000000000</double>
+                 </property>
+                 <property name="value">
+                  <double>1.000000000000000</double>
+                 </property>
+                </widget>
                </item>
               </layout>
              </widget>

@@ -93,10 +93,18 @@ const void EigenBuffer::get(const Eigen::Ref<const Eigen::MatrixXf>& out) const 
 	//return this->buffer_;
 }
 
-float EigenBuffer::at(unsigned int row, unsigned int col) {
+const float EigenBuffer::at(unsigned int sampleId, unsigned int channelId) const {
 	// CAREFUL! Internal buffer representation is channels x samples to avoid
 	// transposition
-	return this->buffer_(col, row);
+	return this->buffer_(channelId, sampleId);
+}
+
+Eigen::MatrixXf& EigenBuffer::get(void) {
+	return this->buffer_;
+}
+
+const Eigen::MatrixXf& EigenBuffer::get(void) const {
+	return this->buffer_;
 }
 
 

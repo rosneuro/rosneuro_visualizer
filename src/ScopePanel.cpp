@@ -60,7 +60,8 @@ void ScopePanel::draw(const EigenBuffer& buffer, const QVector<int>& chindex) {
 	for(auto ch = 0; ch<nchannels; ch++) {
 		unsigned int chInd = chindex.at(ch);
 		for(auto sp = 0; sp<nsamples; sp++) {
-			yvalues[sp] = this->remap(const_cast<EigenBuffer&>(buffer).at(sp, chInd), this->scale_) + nchannels - ch;
+			//yvalues[sp] = this->remap(const_cast<EigenBuffer&>(buffer).at(sp, chInd), this->scale_) + nchannels - ch;
+			yvalues[sp] = this->remap(buffer.at(sp, chInd), this->scale_) + nchannels - ch;
 		}
 
 		this->graph(ch)->setData(xvalues, yvalues);
@@ -145,8 +146,8 @@ double ScopePanel::remap(double value, double scale) {
 	low1 = -scale;
 	high1 = scale;
 
-	low2 = -0.5;
-	high2 = 0.5;
+	low2 = -1.0;
+	high2 = 1.0;
 	
 	rvalue = low2 + (value - low1) * (high2 - low2) / (high1 - low1);
 

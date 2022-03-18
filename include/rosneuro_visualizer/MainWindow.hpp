@@ -10,6 +10,9 @@
 #include "rosneuro_visualizer/ScopePanel.hpp"
 #include "rosneuro_visualizer/Buffer.hpp"
 #include "rosneuro_visualizer/EigenBuffer.hpp"
+#include "rosneuro_visualizer/FilterCar.hpp"
+#include "rosneuro_visualizer/FilterReference.hpp"
+#include "rosneuro_visualizer/FilterButterworth.hpp"
 
 namespace Ui {
 class MainWindow;
@@ -30,6 +33,12 @@ class MainWindow : public QMainWindow {
 		void on_ChannelsChanged(void);
 		void on_ScaleChanged(void);
 		void on_WindowChanged(void);
+		void on_ReferenceChanged(void);
+		void on_RefElectrodeChanged(void);
+		void on_LowPassCheckChanged(void);
+		void on_LowPassValueChanged(void);
+		void on_HighPassCheckChanged(void);
+		void on_HighPassValueChanged(void);
 		
 		void on_DataInfo(float samplerate, unsigned int nchannels, QList<QString> labels, QString info);
 		void on_MessageInfo(unsigned int sequence, float rate);
@@ -39,7 +48,9 @@ class MainWindow : public QMainWindow {
 		void ui_set_channels(const QList<QString>& labels);
 		void ui_set_info(const QString& info);
 
-	private:
+	public:
+		enum References {NOREFERENCE, AVERAGE, ELECTRODE, BIPOLAR};
+		enum Temporal   {NOFILTER, LOWPASS, HIGHPASS};
 		
 	private:
 		Ui::NeuroVizPanel* 	ui_;
@@ -50,6 +61,14 @@ class MainWindow : public QMainWindow {
 		EigenBuffer				buffer_;
 		unsigned int		window_size_ = 10;
 		float				samplerate_;
+		unsigned int		reference_;
+		bool				is_lowpass_enabled_  = false;
+		bool				is_highpass_enabled_ = false;
+		unsigned int 		ref_electrode_;
+		FilterButterworth	filter_lp_;
+		FilterButterworth	filter_hp_;
+		float 				lowpass_cutoff_  = 100.0f;
+		float 				highpass_cutoff_ = 1.0f;
 
 		QVector<int>		channel_index_selected_;
 		QString				info_;
