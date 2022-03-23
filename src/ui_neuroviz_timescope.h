@@ -1,13 +1,13 @@
 /********************************************************************************
-** Form generated from reading UI file 'neuroviz_timescopeELcuDK.ui'
+** Form generated from reading UI file 'neuroviz_timescopeoTDMqH.ui'
 **
 ** Created by: Qt User Interface Compiler version 5.12.8
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
 
-#ifndef NEUROVIZ_TIMESCOPEELCUDK_H
-#define NEUROVIZ_TIMESCOPEELCUDK_H
+#ifndef NEUROVIZ_TIMESCOPEOTDMQH_H
+#define NEUROVIZ_TIMESCOPEOTDMQH_H
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
@@ -146,7 +146,6 @@ public:
         ReferenceValue->addItem(QString());
         ReferenceValue->addItem(QString());
         ReferenceValue->addItem(QString());
-        ReferenceValue->addItem(QString());
         ReferenceValue->setObjectName(QString::fromUtf8("ReferenceValue"));
         ReferenceValue->setStyleSheet(QString::fromUtf8("selection-background-color: rgb(136, 138, 133);"));
 
@@ -237,7 +236,7 @@ public:
 
         retranslateUi(TimeScope);
 
-        ScaleValue->setCurrentIndex(5);
+        ScaleValue->setCurrentIndex(6);
         TimeWindowValue->setCurrentIndex(3);
 
 
@@ -271,7 +270,6 @@ public:
         ReferenceValue->setItemText(0, QApplication::translate("TimeScope", "None", nullptr));
         ReferenceValue->setItemText(1, QApplication::translate("TimeScope", "Average", nullptr));
         ReferenceValue->setItemText(2, QApplication::translate("TimeScope", "Electrode", nullptr));
-        ReferenceValue->setItemText(3, QApplication::translate("TimeScope", "Bipole", nullptr));
 
         groupBox_8->setTitle(QApplication::translate("TimeScope", "Time window:", nullptr));
         TimeWindowValue->setItemText(0, QApplication::translate("TimeScope", "1 s", nullptr));
@@ -292,4 +290,4 @@ namespace Ui {
 
 QT_END_NAMESPACE
 
-#endif // NEUROVIZ_TIMESCOPEELCUDK_H
+#endif // NEUROVIZ_TIMESCOPEOTDMQH_H

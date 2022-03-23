@@ -13,7 +13,6 @@ ScopePanel::ScopePanel(QString name, QWidget* parent) : NeuroPanel(name, parent)
 	this->window_length_  	= 10.0f;
 	this->filter_lp_.set_type(FilterType::LOWPASS);
 	this->filter_hp_.set_type(FilterType::HIGHPASS);
-	
 
 	this->ui_->ScaleValue->setEnabled(false);
 	this->ui_->HighPassCheck->setEnabled(false);
@@ -128,11 +127,50 @@ void ScopePanel::reset(void) {
 	this->isset_ = false;
 }
 
-void ScopePanel::update(void) {}
+void ScopePanel::update(const rosneuro_msgs::NeuroFrame& frame) {
+
+	std::vector<float>* data;
+
+	switch(this->getDataType()) {
+		case DataType::EEG:
+			data = const_cast<std::vector<float>*>(&frame.eeg.data);
+			break;
+		case DataType::EXG:
+			data = const_cast<std::vector<float>*>(&frame.exg.data);
+			break;
+		default:
+			break;
+	}
+
+	if(data->size() == 0)
+		return;
+
+	if(this->IsLowPassEnabled_ == true)
+		this->filter_lp_.apply((*data));
+	
+	if(this->IsHighPassEnabled_ == true)
+		this->filter_hp_.apply((*data));
+
+	switch(this->SpatialFilterIndex_) {
+		case SpatialFilter::AVERAGE:
+			FilterCar::apply((*data), this->buffer_->channels());
+			break;
+		case SpatialFilter::ELECTRODE:
+			FilterReference::apply((*data), this->buffer_->channels(), this->RefElectrodeIndex_);
+			break;
+		default:
+			break;
+	}
+
+
+	this->buffer_->add(*data);
+}
 
 void ScopePanel::draw(void) {
 
-	this->scope_->plot();
+	
+
+	this->scope_->plot((*this->buffer_));
 }
 
 void ScopePanel::reset_channels(void) {
@@ -143,22 +181,6 @@ void ScopePanel::reset_channels(void) {
 	this->channel_selected_index_.clear();
 }
 
-void ScopePanel::setup_butterworth(FilterType type) {
-
-	switch(type) {
-		case FilterType::LOWPASS:
-			this->filter_lp_.setup(this->FilterOrder_, this->samplerate_, 
-								   this->LowPassCutoff_, this->nchannels_);
-			break;
-		case FilterType::HIGHPASS:
-			this->filter_hp_.setup(this->FilterOrder_, this->samplerate_, 
-								   this->LowPassCutoff_, this->nchannels_);
-			break;
-		default:
-			break;
-	}
-}
-
 void ScopePanel::on_ChannelSelection(void) {
 
 	this->channel_selected_index_.clear();
@@ -167,7 +189,6 @@ void ScopePanel::on_ChannelSelection(void) {
     	this->channel_selected_index_.push_back(this->ui_->ChannelsList->row(item));
 	}
 
-
 	// Update temporal scope
 	this->scope_->set_channel_labels(this->channel_labels_);
 	this->scope_->setup(this->nsamples_, this->channel_selected_index_);
@@ -175,6 +196,7 @@ void ScopePanel::on_ChannelSelection(void) {
 
 void ScopePanel::on_ScaleChanged(int index) {
 	this->ScaleValue_ = this->scales_.at(index);;
+	this->scope_->set_scale(this->ScaleValue_);
 }
 
 void ScopePanel::on_TimeWindowChanged(int index) {
@@ -208,14 +230,14 @@ void ScopePanel::on_LowPassCheckChanged(int index) {
 
 	if (this->IsLowPassEnabled_ == true) {
 		this->LowPassCutoff_ = this->ui_->LowPassValue->value();
-		this->setup_butterworth(FilterType::LOWPASS);
+		this->filter_lp_.setup(this->FilterOrder_, this->samplerate_, this->LowPassCutoff_, this->nchannels_);
 	}
 }
 
 void ScopePanel::on_LowPassValueChanged(double value) {
 	if (this->IsLowPassEnabled_ == true) {
 		this->LowPassCutoff_ = value;
-		this->setup_butterworth(FilterType::LOWPASS);
+		this->filter_lp_.setup(this->FilterOrder_, this->samplerate_, this->LowPassCutoff_, this->nchannels_);
 	}
 }
 
@@ -224,13 +246,13 @@ void ScopePanel::on_HighPassCheckChanged(int index) {
 
 	if (this->IsHighPassEnabled_ == true) {
 		this->HighPassCutoff_ = this->ui_->HighPassValue->value();
-		this->setup_butterworth(FilterType::HIGHPASS);
+		this->filter_hp_.setup(this->FilterOrder_, this->samplerate_, this->HighPassCutoff_, this->nchannels_);
 	}
 }
 
 void ScopePanel::on_HighPassValueChanged(double value) {
 	if (this->IsHighPassEnabled_ == true) {
 		this->HighPassCutoff_ = value;
-		this->setup_butterworth(FilterType::HIGHPASS);
+		this->filter_hp_.setup(this->FilterOrder_, this->samplerate_, this->HighPassCutoff_, this->nchannels_);
 	}
 }

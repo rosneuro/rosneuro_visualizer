@@ -16,7 +16,7 @@ class NeuroPanel : public QWidget {
 
 		virtual bool setup(const rosneuro_msgs::NeuroFrame& frame) = 0;
 		virtual void reset(void) = 0;
-		virtual void update(void) = 0;
+		virtual void update(const rosneuro_msgs::NeuroFrame& frame) = 0;
 		virtual void draw(void) = 0;
 		virtual bool isset(void);
 

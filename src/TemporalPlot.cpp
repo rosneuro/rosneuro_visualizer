@@ -123,33 +123,72 @@ void TemporalPlot::set_axis_x(unsigned int nsamples) {
 	}
 	this->xticker_->addTick(uwin*samplerate, QString::number(uwin) + " s");
 
+	// Setting x for the plot
+	this->x_.clear();
+	for(auto i=0; i<nsamples; i++)
+		this->x_.push_back(i);
+
 	this->xAxis->setTicker(this->xticker_);
 	this->xAxis->setRange(0, nsamples);
 	this->xAxis->setTickLabels(true);
 	this->xAxis->setVisible(true);
 }
 
-void TemporalPlot::plot(void) {
+void TemporalPlot::plot(const EigenBuffer& buffer) {
 
-	//printf("plot\n");
-	//this->graph(0)->setData(this->x_, this->y_);
+	// Create y-values vector
+	unsigned int pIdx = 0;
+	this->palette_.reset();
+
+	unsigned int nchannels = this->channel_selected_index_.size();
+	unsigned int chIdx = 0;
+	for(auto cit=this->channel_selected_index_.begin(); cit!=this->channel_selected_index_.end(); ++cit) {
+		this->y_.clear();
+		for(auto sit=this->x_.begin(); sit!=this->x_.end(); ++sit) {
+			this->y_.push_back(this->rescale(buffer.at((*sit), (*cit)), this->scale_) + nchannels - chIdx);
+		}
+
+		this->graph(chIdx)->setData(this->x_, this->y_);
+
+		this->pengraph_.setColor(this->palette_.get());
+		this->graph(chIdx)->setPen(this->pengraph_);
+		this->palette_.next();
+
+		chIdx++;
+	}
+
+
+	/*
+	for(auto ch = 0; ch<nchannels; ch++) {
+		unsigned int chInd = chindex.at(ch);
+		for(auto sp = 0; sp<nsamples; sp++) {
+			yvalues[sp] = this->remap(buffer.at(sp, chInd), this->scale_) + nchannels - ch;
+		}
+
+		this->graph(ch)->setData(xvalues, yvalues);
+
+		QColor color = this->palette_.get();
+		this->pengraph_.setColor(color);
+		this->graph(ch)->setPen(this->pengraph_);
+		this->palette_.next();
+	}
+	*/
 
 	this->replot();
+}
 
+double TemporalPlot::rescale(double value, double scale) {
 
-	//QVector<double> x(101), y(101); // initialize with entries 0..100
-	//for (int i=0; i<101; ++i)
-	//{
-	//  x[i] = i/50.0 - 1; // x goes from -1 to 1
-	//  y[i] = x[i]*x[i]; // let's plot a quadratic function
-	//}
-	//// create graph and assign data to it:
-	//this->graph(0)->setData(x, y);
-	//// give the axes some labels:
-	//this->xAxis->setLabel("x");
-	//this->yAxis->setLabel("y");
-	//// set axes ranges, so we see all data:
-	//this->xAxis->setRange(-1, 1);
-	//this->yAxis->setRange(0, 1);
-	//this->replot();
+	double low1, high1, low2, high2, rvalue;
+
+	low1 = -scale;
+	high1 = scale;
+
+	low2 = -1.0;
+	high2 = 1.0;
+	
+	rvalue = low2 + (value - low1) * (high2 - low2) / (high1 - low1);
+
+	return rvalue;
+
 }

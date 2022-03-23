@@ -94,9 +94,10 @@ void MainWindow::on_StopEvent(void) {
 
 void MainWindow::on_FirstMessage(rosneuro_msgs::NeuroFrame frame) {
 	
-	// Setup data information (sampling rate, data info)
+	// Setup data information (sampling rate, data info, expected message rate)
 	this->set_samplerate(frame.sr);
 	this->set_info(frame);
+	this->expected_messagerate_ = frame.sr/frame.eeg.info.nsamples;
 
 	// Store channel labels (EEM, EMG, TRI)
 	this->store_channel_labels(frame);
@@ -137,11 +138,19 @@ void MainWindow::set_samplerate(float rate) {
 void MainWindow::set_messagerate(float rate) {
 	this->messagerate_ = rate;
 
+
 	QString qrate = "~";
 	if (rate != 0)
 		qrate = QString::number(rate, 'G', 3);
                                 
 	this->ui_->MessageRateLabel->setText(qrate + " Hz");
+	
+	if(std::fabs(this->messagerate_ - this->expected_messagerate_) > 0.1) {
+		this->ui_->MessageRateLabel->setStyleSheet("QLabel { color : red; }");
+	} else {
+		this->ui_->MessageRateLabel->setStyleSheet("QLabel { color : black; }");
+	}
+
 }
 
 void MainWindow::set_messagesequence(unsigned int sequence) {
@@ -215,6 +224,10 @@ void MainWindow::on_DataAvailable(rosneuro_msgs::NeuroFrame frame) {
 	}
 
 
+	if(this->current_panel_->isset() == true) {
+		this->current_panel_->update(frame);
+	}
+		
 	if(this->current_panel_->isset() == true) {
 		this->current_panel_->draw();
 	}

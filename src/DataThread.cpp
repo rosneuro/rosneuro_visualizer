@@ -85,7 +85,7 @@ void DataThread::run(void) {
 void DataThread::on_received_data(const rosneuro_msgs::NeuroFrame& msg) {
 
 	if(this->first_msg_ == true) {
-		ROS_INFO("[DataThread] First message received");	
+		ROS_DEBUG("[DataThread] First message received");	
 		this->samplerate_ = msg.sr;
 		this->first_msg_ = false;
 		emit sig_first_message(msg);

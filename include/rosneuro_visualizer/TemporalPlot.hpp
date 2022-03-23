@@ -3,6 +3,7 @@
 
 #include <cmath>
 #include <qcustomplot.h>
+#include "rosneuro_visualizer/EigenBuffer.hpp"
 #include "rosneuro_visualizer/Palette.hpp"
 
 class TemporalPlot : public QCustomPlot {
@@ -19,8 +20,9 @@ class TemporalPlot : public QCustomPlot {
 		void set_scale(double scale);
 		void set_axis_x(unsigned int nsamples);
 		void set_axis_y(unsigned int nchannels);
+		double rescale(double value, double scale);
 
-		void plot(void);
+		void plot(const EigenBuffer& buffer);
 
 	protected:
 		QVector<double>	x_;
@@ -33,7 +35,7 @@ class TemporalPlot : public QCustomPlot {
 		QFont	yfont_;
 		static constexpr int xfontsize_ = 10;
 		static constexpr int yfontsize_ = 10;
-		double	scale_;
+		double	scale_ = 100.0f;
 
 		QSharedPointer<QCPAxisTickerText> xticker_;
 		QSharedPointer<QCPAxisTickerText> yticker_;

@@ -54,7 +54,7 @@
              <string notr="true">selection-background-color: rgb(136, 138, 133);</string>
             </property>
             <property name="currentIndex">
-             <number>5</number>
+             <number>6</number>
             </property>
             <item>
              <property name="text">
@@ -215,11 +215,6 @@
             <item>
              <property name="text">
               <string>Electrode</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Bipole</string>
              </property>
             </item>
            </widget>

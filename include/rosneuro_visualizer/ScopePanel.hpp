@@ -21,7 +21,7 @@ class ScopePanel : public NeuroPanel {
 		
 		virtual bool setup(const rosneuro_msgs::NeuroFrame& frame);
 		virtual void reset(void);
-		virtual void update(void);
+		virtual void update(const rosneuro_msgs::NeuroFrame& frame);
 		virtual void draw(void);
 
 	public slots:
@@ -37,7 +37,6 @@ class ScopePanel : public NeuroPanel {
 
 	protected:
 		void reset_channels(void);
-		void setup_butterworth(FilterType type);
 
 	public:
 		enum SpatialFilter {NOREFERENCE, AVERAGE, ELECTRODE, BIPOLAR};

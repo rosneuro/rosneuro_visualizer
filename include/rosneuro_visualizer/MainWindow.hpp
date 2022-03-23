@@ -60,6 +60,7 @@ class MainWindow : public QMainWindow {
 
 		float				samplerate_;
 		float				messagerate_;
+		float				expected_messagerate_;
 		unsigned int		sequence_;
 		QString				info_;
 		QList<QString>		eeg_labels_;
