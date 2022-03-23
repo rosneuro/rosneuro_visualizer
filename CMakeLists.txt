@@ -34,7 +34,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 #SET(CMAKE_AUTOUIC ON)
 
-find_package(Qt5 COMPONENTS Core Gui Widgets QCustomPlot)
+find_package(Qt5 COMPONENTS Core Gui Widgets)
 
 ##############################################################################
 # Sections
@@ -74,7 +74,7 @@ set( QT_SOURCES
 	src/FilterReference.cpp
 	src/neuroviz.cpp
     src/ui_neuroviz.h
-    src/ui_dialog_info.h
+    src/ui_neuroviz_dialog_info.h
     src/ui_neuroviz_timescope.h
     include/rosneuro_visualizer/MainWindow.hpp
 	include/rosneuro_visualizer/EigenBuffer.hpp

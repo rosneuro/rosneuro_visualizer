@@ -19,7 +19,6 @@ class Palette {
 	private:
 		std::vector<QColor> palette_;
 		int	index_ = 0;
-
 };
 
 #endif

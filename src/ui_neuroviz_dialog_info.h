@@ -1,13 +1,13 @@
 /********************************************************************************
-** Form generated from reading UI file 'dialog_infoqqsKXX.ui'
+** Form generated from reading UI file 'neuroviz_dialog_infoRgRkcs.ui'
 **
 ** Created by: Qt User Interface Compiler version 5.12.8
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
 
-#ifndef DIALOG_INFOQQSKXX_H
-#define DIALOG_INFOQQSKXX_H
+#ifndef NEUROVIZ_DIALOG_INFORGRKCS_H
+#define NEUROVIZ_DIALOG_INFORGRKCS_H
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
@@ -81,4 +81,4 @@ namespace Ui {
 
 QT_END_NAMESPACE
 
-#endif // DIALOG_INFOQQSKXX_H
+#endif // NEUROVIZ_DIALOG_INFORGRKCS_H

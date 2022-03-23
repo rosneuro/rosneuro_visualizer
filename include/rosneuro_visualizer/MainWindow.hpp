@@ -5,7 +5,7 @@
 #include <QMainWindow>
 #include <QMessageBox>
 #include "src/ui_neuroviz.h"
-#include "src/ui_dialog_info.h"
+#include "src/ui_neuroviz_dialog_info.h"
 #include "rosneuro_visualizer/EigenBuffer.hpp"
 #include "rosneuro_visualizer/DataThread.hpp"
 #include "rosneuro_visualizer/ScopePanel.hpp"
