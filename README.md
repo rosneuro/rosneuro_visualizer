@@ -1,4 +1,4 @@
-# ROSNeuro Visualizaer package
+# ROSNeuro Visualizer package
 
 The package provides **neuroviz** stand-alone application to visualize **NeuroFrame** messages ([rosneuro_msgs](https://github.com/rosneuro/rosneuro_msgs)) published in a given topic. 
 
