@@ -1,5 +1,5 @@
-#ifndef ROSNEURO_VISUALIZER_DATATHREAD_HPP
-#define ROSNEURO_VISUALIZER_DATATHREAD_HPP
+#ifndef DATA_THREAD_HPP
+#define DATA_THREAD_HPP
 
 #include <deque>
 #include <QMutex>
@@ -8,6 +8,8 @@
 #include <ros/ros.h>
 
 #include "rosneuro_msgs/NeuroFrame.h"
+
+
 
 class DataThread : public QThread {
 
@@ -26,15 +28,19 @@ class DataThread : public QThread {
 		void run(void) override;
 
 	signals:
-		void sig_first_message(rosneuro_msgs::NeuroFrame msg);
+		void sig_data_info(float samplerate, unsigned int nchannels, QList<QString> labels, QString info); 
+		void sig_data_available(std::vector<float> data);
 		void sig_message_info(unsigned int sequence, float rate);	
-		void sig_data_available(rosneuro_msgs::NeuroFrame msg);
+		//void sig_info_message_sequence(unsigned int sequence);
+		//void sig_info_message_rate(float rate);
 
 	private:
-
-
 		void on_received_data(const rosneuro_msgs::NeuroFrame& msg);
+		void set_data_info(float samplerate, const rosneuro_msgs::NeuroDataInfo& info);
+		void set_message_info(unsigned int sequence, float rate);
 		float estimate_message_rate(double nsecs);
+		//void set_message_sequence(unsigned int sequence);
+		//void set_message_rate(float rate);
 		
 		std::string to_string(const rosneuro_msgs::NeuroDataInfo& info);
 
@@ -61,7 +67,5 @@ class DataThread : public QThread {
 
 		
 };
-		
-Q_DECLARE_METATYPE(rosneuro_msgs::NeuroFrame);
 
 #endif

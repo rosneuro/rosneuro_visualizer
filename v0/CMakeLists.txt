@@ -63,29 +63,28 @@ add_definitions(${EIGEN3_DEFINITIONS})
 
 set( QT_SOURCES
 	src/MainWindow.cpp
-	src/EigenBuffer.cpp
 	src/DataThread.cpp
 	src/NeuroPanel.cpp
 	src/ScopePanel.cpp
-	src/TemporalPlot.cpp
+	src/Buffer.cpp
+	src/EigenBuffer.cpp
 	src/Palette.cpp
-	src/FilterButterworth.cpp
 	src/FilterCar.cpp
 	src/FilterReference.cpp
+	src/FilterButterworth.cpp
 	src/neuroviz.cpp
-    src/ui_neuroviz.h
+    src/ui_panel.h
     src/ui_dialog_info.h
-    src/ui_neuroviz_timescope.h
     include/rosneuro_visualizer/MainWindow.hpp
-	include/rosneuro_visualizer/EigenBuffer.hpp
 	include/rosneuro_visualizer/DataThread.hpp
 	include/rosneuro_visualizer/NeuroPanel.hpp
 	include/rosneuro_visualizer/ScopePanel.hpp
-	include/rosneuro_visualizer/TemporalPlot.hpp
+	include/rosneuro_visualizer/Buffer.hpp
+	include/rosneuro_visualizer/EigenBuffer.hpp
 	include/rosneuro_visualizer/Palette.hpp
-	include/rosneuro_visualizer/FilterButterworth.hpp
 	include/rosneuro_visualizer/FilterCar.hpp
 	include/rosneuro_visualizer/FilterReference.hpp
+	include/rosneuro_visualizer/FilterButterworth.hpp
     )
 
 ##############################################################################

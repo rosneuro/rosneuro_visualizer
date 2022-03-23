@@ -1,41 +1,36 @@
-#ifndef NEUROPANEL_HPP
-#define NEUROPANEL_HPP
+#ifndef ROSNEURO_VISUALIZER_NEUROPANEL_HPP
+#define ROSNEURO_VISUALIZER_NEUROPANEL_HPP
 
-#include <qcustomplot.h>
-#include "rosneuro_visualizer/Palette.hpp"
-//#include "rosneuro_visualizer/Buffer.hpp"
-#include "rosneuro_visualizer/EigenBuffer.hpp"
+#include <QWidget>
+#include "rosneuro_msgs/NeuroFrame.h"
 
-class Palette;
+enum class DataType {EEG, EXG, TRI, UNKNOWN};
 
-class NeuroPanel : public QCustomPlot {
+class NeuroPanel : public QWidget {
+
+	Q_OBJECT
 	
 	public:
-		NeuroPanel(QWidget* parent = nullptr);
+		NeuroPanel(QString name, QWidget* parent = nullptr);
 		virtual ~NeuroPanel(void);
 
-		virtual void set_channel_labels(const QList<QString>& chlabel);
-		virtual void set_scale(double scale);
-		virtual void setup(unsigned int nsamples, unsigned int nchannels) = 0;
-		//virtual void draw(const Buffer& buffer, const QVector<int>& chindex) = 0; 
-		virtual void draw(const EigenBuffer& buffer, const QVector<int>& chindex) = 0; 
+		virtual bool setup(const rosneuro_msgs::NeuroFrame& frame) = 0;
+		virtual void reset(void) = 0;
+		virtual void update(void) = 0;
+		virtual void draw(void) = 0;
+		virtual bool isset(void);
 
+		DataType getDataType(void);
+		void setDataType(DataType type);
+
+		void setName(QString name);
+		QString name(void);
 
 	protected:
-		QPen 	penclear_;
-		QPen	pengrid_;
-		QPen	pengraph_;
-		QFont 	xfont_;
-		QFont	yfont_;
-		static constexpr int xfontsize_ = 10;
-		static constexpr int yfontsize_ = 10;
-		double	scale_;
+		QString  	name_;
+		DataType 	datatype_ = DataType::UNKNOWN;
+		bool		isset_;		
 
-		QSharedPointer<QCPAxisTickerText> xticker_;
-		QSharedPointer<QCPAxisTickerText> yticker_;
-
-		QList<QString> 	channel_label_;
- 		Palette	palette_;
 };
 
 

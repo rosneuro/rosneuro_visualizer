@@ -30,7 +30,7 @@ void DataThread::start_thread(void) {
 	this->mutex_.lock();
 	if (!this->isRunning()) {
 		this->start(LowPriority);
-		this->restart_ 	 = true;
+		this->restart_ 	 = false;
 		this->abort_ = false;
 	} else {
 		this->restart_ 	 = true;
@@ -61,6 +61,10 @@ void DataThread::run(void) {
 		if(this->restart_ == true) {
 			this->restart_ 		= false;
 			this->first_msg_ 	= true;
+			this->samplerate_ 	= 0;
+			this->nchannels_ 	= 0;
+			this->labels_ 		= QList<QString>();
+			this->set_message_info(0, 0.0);
 			this->mr_nsecs_.clear();
 			this->mutex_.unlock();
 			continue;
@@ -85,23 +89,48 @@ void DataThread::run(void) {
 void DataThread::on_received_data(const rosneuro_msgs::NeuroFrame& msg) {
 
 	if(this->first_msg_ == true) {
-		ROS_INFO("[DataThread] First message received");	
-		this->samplerate_ = msg.sr;
+		ROS_INFO("First message received");	
+		this->set_data_info(msg.sr, msg.eeg.info);
 		this->first_msg_ = false;
-		emit sig_first_message(msg);
 	}
 
 	// Estimate and set message rate and sequence signal
 	float msg_rate;
 	msg_rate = this->estimate_message_rate(ros::Time::now().toSec());
-	emit sig_message_info(msg.header.seq, msg_rate);
+	this->set_message_info(msg.header.seq, msg_rate);
 	
-	// Emit signal new frame
-	emit sig_data_available(msg);
+
+	//// Set sequence signal
+	//this->set_message_sequence(msg.header.seq);
+
+	//// Estimate and set message rate signal
+	//float msg_rate;
+	//msg_rate = this->estimate_message_rate(ros::Time::now().toSec());
+	//this->set_message_rate(msg_rate);
+
+	// Emit signal new data
+	emit sig_data_available(msg.eeg.data);
 }
 
+void DataThread::set_data_info(float samplerate, const rosneuro_msgs::NeuroDataInfo& info) {
 
+	// Sampling rate
+	this->samplerate_ = samplerate;
 
+	// Channels and labels
+	this->nchannels_  = info.nchannels;
+	this->labels_.clear();
+	for(auto it=info.labels.begin(); it!=info.labels.end(); ++it) {
+		this->labels_.push_back(QString::fromStdString(*it));
+	}
+
+	// Info string
+	this->info_ = QString::fromStdString(this->to_string(info));	
+
+	// Emit signal for data info
+	emit sig_data_info(this->samplerate_, this->nchannels_, this->labels_, this->info_);
+
+}
 
 std::string DataThread::to_string(const rosneuro_msgs::NeuroDataInfo& info) {
 	std::string str_info =	"Number of channels: " + std::to_string(info.nchannels) + "\n" + 
@@ -117,6 +146,18 @@ std::string DataThread::to_string(const rosneuro_msgs::NeuroDataInfo& info) {
 	return str_info;
 }
 
+void DataThread::set_message_info(unsigned int sequence, float rate) {
+	emit sig_message_info(sequence, rate);
+}
+
+//void DataThread::set_message_sequence(unsigned int sequence) {
+//	this->sequence_ = sequence;
+//	emit sig_info_message_sequence(this->sequence_);
+//}
+//
+//void DataThread::set_message_rate(float rate) {
+//	emit sig_info_message_rate(rate);
+//}
 
 float DataThread::estimate_message_rate(double nsecs) {
 

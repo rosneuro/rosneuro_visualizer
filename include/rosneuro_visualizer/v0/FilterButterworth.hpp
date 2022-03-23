@@ -7,14 +7,12 @@
 #include <rtf_common.h>
 #include <rtfilter.h>
 
-enum class FilterType {LOWPASS = 0, HIGHPASS};
-
 class FilterButterworth {
 
 	public:
 		FilterButterworth(void);
 		virtual ~FilterButterworth(void);
-		void set_type(FilterType type);
+		void set_type(unsigned int type);
 		bool setup(unsigned int order, double samplerate, double cutoff, unsigned int nchannels);
 
 		void apply(std::vector<float>& data);
@@ -26,7 +24,7 @@ class FilterButterworth {
 		double 			cutoff_;
 		unsigned int 	nchannels_;
 		hfilter 		filt_ = nullptr;
-		FilterType		type_;
+		unsigned int	type_;
 
 
 

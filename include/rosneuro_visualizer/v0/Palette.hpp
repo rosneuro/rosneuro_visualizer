@@ -1,5 +1,5 @@
-#ifndef ROSNEURO_VISUALIZER_PALETTE_HPP
-#define ROSNEURO_VISUALIZER_PALETTE_HPP
+#ifndef PALETTE_HPP
+#define PALETTE_HPP
 
 #include <vector>
 #include <QColor>

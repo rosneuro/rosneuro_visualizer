@@ -7,7 +7,7 @@ FilterButterworth::~FilterButterworth(void) {
 	rtf_destroy_filter(this->filt_);
 }
 
-void FilterButterworth::set_type(FilterType type) {
+void FilterButterworth::set_type(unsigned int type) {
 	this->type_ = type;
 }
 
@@ -22,8 +22,7 @@ bool FilterButterworth::setup(unsigned int order, double samplerate, double cuto
 	this->nchannels_ 	= nchannels;
 
 	normfc = this->cutoff_/this->samplerate_;
-	this->filt_ = rtf_create_butterworth(this->nchannels_, RTF_FLOAT, normfc, 
-										 this->order_, static_cast<unsigned int>(this->type_));
+	this->filt_ = rtf_create_butterworth(this->nchannels_, RTF_FLOAT, normfc, this->order_, this->type_);
 
 	if(this->filt_ == nullptr)
 		retcod = false;

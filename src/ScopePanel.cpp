@@ -1,156 +1,236 @@
 #include "rosneuro_visualizer/ScopePanel.hpp"
 
+ScopePanel::ScopePanel(QString name, QWidget* parent) : NeuroPanel(name, parent),
+										  				ui_(new Ui::TimeScope) {
 
-ScopePanel::ScopePanel(QWidget* parent) : NeuroPanel(parent) {
-	this->set_scale(50.0f);
-	this->setup(0, 0);
+	this->ui_->setupUi(this);
+	this->scope_ = this->ui_->eegScope;
+
+	this->buffer_ 			= nullptr;
+	this->FilterOrder_  	= 2;
+	this->LowPassCutoff_  	= 100.0f;
+	this->HighPassCutoff_ 	= 1.0f;
+	this->window_length_  	= 10.0f;
+	this->filter_lp_.set_type(FilterType::LOWPASS);
+	this->filter_hp_.set_type(FilterType::HIGHPASS);
+	
+
+	this->ui_->ScaleValue->setEnabled(false);
+	this->ui_->HighPassCheck->setEnabled(false);
+	this->ui_->HighPassValue->setEnabled(false);
+	this->ui_->LowPassCheck->setEnabled(false);
+	this->ui_->LowPassValue->setEnabled(false);
+	this->ui_->ReferenceValue->setEnabled(false);
+	this->ui_->ReferenceOpt->setEnabled(false);
+	this->ui_->ChannelsList->setEnabled(false);
+	this->ui_->TimeWindowValue->setEnabled(false);
+	
+	QObject::connect(this->ui_->ChannelsList, SIGNAL(itemSelectionChanged()), SLOT(on_ChannelSelection()));
+	QObject::connect(this->ui_->ScaleValue, SIGNAL(currentIndexChanged(int)), SLOT(on_ScaleChanged(int)));
+	QObject::connect(this->ui_->TimeWindowValue, SIGNAL(currentIndexChanged(int)), SLOT(on_TimeWindowChanged(int)));
+	QObject::connect(this->ui_->ReferenceValue, SIGNAL(currentIndexChanged(int)), SLOT(on_SpatialFilterChanged(int)));
+	QObject::connect(this->ui_->ReferenceOpt, SIGNAL(currentIndexChanged(int)), SLOT(on_RefElectrodeChanged(int)));
+	QObject::connect(this->ui_->LowPassCheck, SIGNAL(stateChanged(int)), SLOT(on_LowPassCheckChanged(int)));
+	QObject::connect(this->ui_->LowPassValue, SIGNAL(valueChanged(double)), SLOT(on_LowPassValueChanged(double)));
+	QObject::connect(this->ui_->HighPassCheck, SIGNAL(stateChanged(int)), SLOT(on_HighPassCheckChanged(int)));
+	QObject::connect(this->ui_->HighPassValue, SIGNAL(valueChanged(double)), SLOT(on_HighPassValueChanged(double)));
+
 }
 
-ScopePanel::~ScopePanel(void) {}
+ScopePanel::~ScopePanel(void) {
 
-void ScopePanel::setup(unsigned int nsamples, unsigned int nchannels) {
+	if(this->scope_ != nullptr)
+		delete this->scope_;
 
-	// Setting un y-ticker (channels)
-	this->set_axis_y(nchannels);
-	
-	// Setting un x-ticker (samples)
-	this->set_axis_x(nsamples);
-
-	// Adding graph for each channel
-	this->clearGraphs();
-	for(auto i=0; i<nchannels; i++)
-		this->addGraph();
-
+	if(this->buffer_ != nullptr)
+		delete this->buffer_;
 }
 
-void ScopePanel::draw(const EigenBuffer& buffer, const QVector<int>& chindex) {
+bool ScopePanel::setup(const rosneuro_msgs::NeuroFrame& frame) {
 
-	unsigned int nchannels = chindex.size();
-	unsigned int nsamples  = buffer.samples();
-	QVector<double> xvalues(nsamples), yvalues(nsamples);
+	bool retcode = true;
 
-	if(chindex != this->channel_index_) {
-		
-		// Adding graph for the provided channels
-		this->clearGraphs();
-		for(auto i=0; i<chindex.size(); i++)
-			this->addGraph();
+	this->samplerate_ = frame.sr;
+	rosneuro_msgs::NeuroDataInfo datainfo;
 
-		// Adding y-tick considering the provided channels
-		unsigned int chId = 1;
-		for(auto i=0; i<chindex.size(); i++) {
-			this->yticker_->addTick(chId, this->channel_label_.at(chindex.at(nchannels - i - 1)));
-			chId++;
-		}
-		this->set_axis_y(nchannels);
-
-		this->channel_index_ = chindex;
-	}
-	
-	this->set_axis_x(buffer.samples());
-
-	// Create x-values vector
-	for(auto i=0; i<nsamples; i++)
-		xvalues[i] = i;
-	
-	
-	// Create y-values vector
-	unsigned int pIdx = 0;
-	this->palette_.reset();
-	for(auto ch = 0; ch<nchannels; ch++) {
-		unsigned int chInd = chindex.at(ch);
-		for(auto sp = 0; sp<nsamples; sp++) {
-			//yvalues[sp] = this->remap(const_cast<EigenBuffer&>(buffer).at(sp, chInd), this->scale_) + nchannels - ch;
-			yvalues[sp] = this->remap(buffer.at(sp, chInd), this->scale_) + nchannels - ch;
-		}
-
-		this->graph(ch)->setData(xvalues, yvalues);
-
-		QColor color = this->palette_.get();
-		this->pengraph_.setColor(color);
-		this->graph(ch)->setPen(this->pengraph_);
-		this->palette_.next();
+	switch(this->getDataType()) {
+		case DataType::EEG:
+			datainfo = frame.eeg.info;
+			break;
+		case DataType::EXG:
+			datainfo = frame.exg.info;
+			break;
+		case DataType::TRI:
+			datainfo = frame.tri.info;
+			break;
+		default:
+			retcode = false;
+			break;
 	}
 
-	// Plotting the data
-	this->replot();
-}
+	if(retcode == false)
+		return retcode;
 
-/*
-void ScopePanel::draw(const Buffer& buffer, const QVector<int>& chindex) {
+	// Setup samples
+	this->nsamples_ = (unsigned int)(this->samplerate_ * this->window_length_); 
 
-	unsigned int nchannels = chindex.size();
-	unsigned int nsamples  = buffer.samples();
-	QVector<double> xvalues(nsamples), yvalues(nsamples);
+	// Setup channels (and channel labels)
+	this->reset_channels();
 
-	if(chindex != this->channel_index_) {
-		
-		// Adding graph for the provided channels
-		this->clearGraphs();
-		for(auto i=0; i<chindex.size(); i++)
-			this->addGraph();
-
-		// Adding y-tick considering the provided channels
-		unsigned int chId = 1;
-		for(auto i=0; i<chindex.size(); i++) {
-			this->yticker_->addTick(chId, this->channel_label_.at(chindex.at(nchannels - i - 1)));
-			chId++;
-		}
-		this->set_axis_y(nchannels);
-
-		this->channel_index_ = chindex;
-	}
-	
-	this->set_axis_x(buffer.samples());
-
-	// Create x-values vector
-	for(auto i=0; i<nsamples; i++)
-		xvalues[i] = i;
-	
-	
-	// Create y-values vector
-	unsigned int pIdx = 0;
-	this->palette_.reset();
-	for(auto ch = 0; ch<nchannels; ch++) {
-		unsigned int chInd = chindex.at(ch);
-		for(auto sp = 0; sp<nsamples; sp++) {
-			yvalues[sp] = this->remap(buffer.get().at(chInd).at(sp), this->scale_) + nchannels - ch;
-		}
-
-		this->graph(ch)->setData(xvalues, yvalues);
-
-		QColor color = this->palette_.get();
-		this->pengraph_.setColor(color);
-		this->graph(ch)->setPen(this->pengraph_);
-		this->palette_.next();
+	this->nchannels_ = datainfo.nchannels;
+	for(auto it=datainfo.labels.begin(); it!=datainfo.labels.end(); ++it) {
+		this->channel_labels_.push_back(QString::fromStdString((*it)));
 	}
 
-	// Plotting the data
-	this->replot();
-}*/
+	for(auto it = this->channel_labels_.begin(); it != this->channel_labels_.end(); ++it) {
+		this->ui_->ChannelsList->addItem((*it));
+		this->ui_->ReferenceOpt->addItem(*it);
+	}
+	this->ui_->ChannelsList->selectAll();
 
-void ScopePanel::set_axis_y(unsigned int nchannels) {
-	this->yAxis->setTicker(this->yticker_);
-	this->yAxis->setRange(0.5, nchannels + 0.5);
-}
+	std::iota(this->channel_selected_index_.begin(), this->channel_selected_index_.end(), 0);
 
-void ScopePanel::set_axis_x(unsigned int nsamples) {
-	this->xAxis->setTicker(this->xticker_);
-	this->xAxis->setRange(0, nsamples);
-}
-
-double ScopePanel::remap(double value, double scale) {
-
-	double low1, high1, low2, high2, rvalue;
-
-	low1 = -scale;
-	high1 = scale;
-
-	low2 = -1.0;
-	high2 = 1.0;
 	
-	rvalue = low2 + (value - low1) * (high2 - low2) / (high1 - low1);
+	// Setup buffer
+	if(this->buffer_ != nullptr)
+		delete this->buffer_;
+	this->buffer_ = new EigenBuffer(this->nsamples_, this->nchannels_);
 
-	return rvalue;
 
+	// Enable GUI buttons
+	this->ui_->ScaleValue->setEnabled(true);
+	this->ui_->HighPassCheck->setEnabled(true);
+	this->ui_->HighPassValue->setEnabled(true);
+	this->ui_->LowPassCheck->setEnabled(true);
+	this->ui_->LowPassValue->setEnabled(true);
+	this->ui_->ReferenceValue->setEnabled(true);
+	this->ui_->ChannelsList->setEnabled(true);
+	this->ui_->TimeWindowValue->setEnabled(true);
+	
+	// Setup temporal scope
+	this->scope_->set_time_window(this->window_length_);
+	this->scope_->set_channel_labels(this->channel_labels_);
+	this->scope_->setup(this->nsamples_, this->channel_selected_index_);
+
+	this->isset_ = true;
+
+	return retcode;
+}
+
+void ScopePanel::reset(void) {
+	this->samplerate_ = 0;
+	this->nsamples_ = 0;
+	this->reset_channels();
+
+	if(this->buffer_ != nullptr) 
+		this->buffer_->reset(this->nsamples_, this->nchannels_);
+
+	this->isset_ = false;
+}
+
+void ScopePanel::update(void) {}
+
+void ScopePanel::draw(void) {
+
+	this->scope_->plot();
+}
+
+void ScopePanel::reset_channels(void) {
+	this->nchannels_ = 0;
+	this->channel_labels_.clear();
+	this->ui_->ChannelsList->clear();	
+	this->ui_->ReferenceOpt->clear();	
+	this->channel_selected_index_.clear();
+}
+
+void ScopePanel::setup_butterworth(FilterType type) {
+
+	switch(type) {
+		case FilterType::LOWPASS:
+			this->filter_lp_.setup(this->FilterOrder_, this->samplerate_, 
+								   this->LowPassCutoff_, this->nchannels_);
+			break;
+		case FilterType::HIGHPASS:
+			this->filter_hp_.setup(this->FilterOrder_, this->samplerate_, 
+								   this->LowPassCutoff_, this->nchannels_);
+			break;
+		default:
+			break;
+	}
+}
+
+void ScopePanel::on_ChannelSelection(void) {
+
+	this->channel_selected_index_.clear();
+
+	for(QListWidgetItem *item: this->ui_->ChannelsList->selectedItems()){
+    	this->channel_selected_index_.push_back(this->ui_->ChannelsList->row(item));
+	}
+
+
+	// Update temporal scope
+	this->scope_->set_channel_labels(this->channel_labels_);
+	this->scope_->setup(this->nsamples_, this->channel_selected_index_);
+}
+
+void ScopePanel::on_ScaleChanged(int index) {
+	this->ScaleValue_ = this->scales_.at(index);;
+}
+
+void ScopePanel::on_TimeWindowChanged(int index) {
+	this->window_length_ = this->windows_.at(index);
+
+	this->nsamples_ = (unsigned int)(this->samplerate_ * this->window_length_);
+	this->buffer_->reset(this->nsamples_, this->nchannels_);
+	
+	// Update temporal scope
+	this->scope_->set_time_window(this->window_length_);
+	this->scope_->setup(this->nsamples_, this->channel_selected_index_);
+}
+
+void ScopePanel::on_SpatialFilterChanged(int index) {
+
+	this->SpatialFilterIndex_ = this->ui_->ReferenceValue->currentIndex();
+	if(this->SpatialFilterIndex_ == SpatialFilter::ELECTRODE) {
+		this->ui_->ReferenceOpt->setEnabled(true);
+	} else {
+		this->ui_->ReferenceOpt->setDisabled(true);
+	}
+	
+}
+
+void ScopePanel::on_RefElectrodeChanged(int index) {
+	this->RefElectrodeIndex_ = this->ui_->ReferenceOpt->currentIndex();
+}
+
+void ScopePanel::on_LowPassCheckChanged(int index) {
+	this->IsLowPassEnabled_ = this->ui_->LowPassCheck->isChecked();
+
+	if (this->IsLowPassEnabled_ == true) {
+		this->LowPassCutoff_ = this->ui_->LowPassValue->value();
+		this->setup_butterworth(FilterType::LOWPASS);
+	}
+}
+
+void ScopePanel::on_LowPassValueChanged(double value) {
+	if (this->IsLowPassEnabled_ == true) {
+		this->LowPassCutoff_ = value;
+		this->setup_butterworth(FilterType::LOWPASS);
+	}
+}
+
+void ScopePanel::on_HighPassCheckChanged(int index) {
+	this->IsHighPassEnabled_ = this->ui_->HighPassCheck->isChecked();
+
+	if (this->IsHighPassEnabled_ == true) {
+		this->HighPassCutoff_ = this->ui_->HighPassValue->value();
+		this->setup_butterworth(FilterType::HIGHPASS);
+	}
+}
+
+void ScopePanel::on_HighPassValueChanged(double value) {
+	if (this->IsHighPassEnabled_ == true) {
+		this->HighPassCutoff_ = value;
+		this->setup_butterworth(FilterType::HIGHPASS);
+	}
 }

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1010</width>
+    <width>992</width>
     <height>864</height>
    </rect>
   </property>
@@ -39,7 +39,7 @@
     <item>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <widget class="QTabWidget" name="tabWidget">
+       <widget class="QTabWidget" name="NeuroTab">
         <property name="enabled">
          <bool>true</bool>
         </property>
@@ -47,605 +47,930 @@
          <string notr="true">background-color: rgb(238, 238, 236);</string>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="eeg_tab">
          <attribute name="title">
           <string>EEG</string>
          </attribute>
          <layout class="QGridLayout" name="gridLayout_8">
-          <item row="0" column="0">
-           <layout class="QGridLayout" name="gridLayout" columnminimumwidth="0">
-            <property name="rightMargin">
-             <number>0</number>
-            </property>
-            <item row="0" column="0">
-             <widget class="QGroupBox" name="groupBox">
-              <property name="enabled">
-               <bool>true</bool>
+          <item row="0" column="1">
+           <layout class="QHBoxLayout" name="horizontalLayout_2">
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_10">
+              <property name="rightMargin">
+               <number>0</number>
               </property>
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>115</width>
-                <height>69</height>
-               </size>
-              </property>
-              <property name="title">
-               <string>Scale</string>
-              </property>
-              <layout class="QVBoxLayout" name="verticalLayout_3">
-               <item>
-                <widget class="QComboBox" name="ScaleValue">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="styleSheet">
-                  <string notr="true">selection-background-color: rgb(136, 138, 133);</string>
-                 </property>
-                 <property name="currentIndex">
-                  <number>5</number>
-                 </property>
+              <item>
+               <widget class="QGroupBox" name="groupBox">
+                <property name="enabled">
+                 <bool>true</bool>
+                </property>
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>115</width>
+                  <height>69</height>
+                 </size>
+                </property>
+                <property name="title">
+                 <string>Scale</string>
+                </property>
+                <layout class="QVBoxLayout" name="verticalLayout_3">
                  <item>
-                  <property name="text">
-                   <string>1 uV</string>
-                  </property>
+                  <widget class="QComboBox" name="EEGScaleValue">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">selection-background-color: rgb(136, 138, 133);</string>
+                   </property>
+                   <property name="currentIndex">
+                    <number>5</number>
+                   </property>
+                   <item>
+                    <property name="text">
+                     <string>1 uV</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>2.5 uV</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>5 uV</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>10 uV</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>25 uV</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>50 uV</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>100 uV</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>250 uV</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>500 uV</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>1 mV</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>2.5 mV</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>5 mV</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>10 mV</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>25 mV</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>50 mV</string>
+                    </property>
+                   </item>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <widget class="QGroupBox" name="groupBox_2">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="title">
+                 <string>Filtering</string>
+                </property>
+                <layout class="QVBoxLayout" name="verticalLayout_4">
+                 <item>
+                  <widget class="QCheckBox" name="EEGLowPassCheck">
+                   <property name="text">
+                    <string>Low pass</string>
+                   </property>
+                  </widget>
                  </item>
                  <item>
-                  <property name="text">
-                   <string>2.5 uV</string>
-                  </property>
+                  <widget class="QDoubleSpinBox" name="EEGLowPassValue">
+                   <property name="maximum">
+                    <double>4096.000000000000000</double>
+                   </property>
+                   <property name="value">
+                    <double>100.000000000000000</double>
+                   </property>
+                  </widget>
                  </item>
                  <item>
-                  <property name="text">
-                   <string>5 uV</string>
-                  </property>
+                  <widget class="QCheckBox" name="EEGHighPassCheck">
+                   <property name="text">
+                    <string>High pass</string>
+                   </property>
+                  </widget>
                  </item>
                  <item>
-                  <property name="text">
-                   <string>10 uV</string>
-                  </property>
+                  <widget class="QDoubleSpinBox" name="EEGHighPassValue">
+                   <property name="maximum">
+                    <double>4096.000000000000000</double>
+                   </property>
+                   <property name="value">
+                    <double>1.000000000000000</double>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <widget class="QGroupBox" name="groupBox_3">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="title">
+                 <string>Reference</string>
+                </property>
+                <layout class="QVBoxLayout" name="verticalLayout_5">
+                 <item>
+                  <widget class="QComboBox" name="EEGReferenceValue">
+                   <property name="styleSheet">
+                    <string notr="true">selection-background-color: rgb(136, 138, 133);</string>
+                   </property>
+                   <item>
+                    <property name="text">
+                     <string>None</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Average</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Electrode</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Bipole</string>
+                    </property>
+                   </item>
+                  </widget>
                  </item>
                  <item>
-                  <property name="text">
-                   <string>25 uV</string>
-                  </property>
+                  <widget class="QComboBox" name="EEGReferenceOpt">
+                   <property name="styleSheet">
+                    <string notr="true">selection-background-color: rgb(136, 138, 133);</string>
+                   </property>
+                  </widget>
                  </item>
-                 <item>
-                  <property name="text">
-                   <string>50 uV</string>
-                  </property>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <widget class="QGroupBox" name="groupBox_8">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>69</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <property name="title">
+                 <string>Time window:</string>
+                </property>
+                <layout class="QGridLayout" name="gridLayout_7">
+                 <item row="0" column="0">
+                  <widget class="QComboBox" name="EEGTimeWindowValue">
+                   <property name="styleSheet">
+                    <string notr="true">selection-background-color: rgb(136, 138, 133);</string>
+                   </property>
+                   <property name="currentIndex">
+                    <number>3</number>
+                   </property>
+                   <item>
+                    <property name="text">
+                     <string>1 s</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>2 s</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>5 s</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>10 s</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>20 s</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>30 s</string>
+                    </property>
+                   </item>
+                  </widget>
                  </item>
-                 <item>
-                  <property name="text">
-                   <string>100 uV</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>250 uV</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>500 uV</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>1 mV</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>2.5 mV</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>5 mV</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>10 mV</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>25 mV</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>50 mV</string>
-                  </property>
-                 </item>
-                </widget>
-               </item>
-              </layout>
-             </widget>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <spacer name="verticalSpacer">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>40</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
             </item>
-            <item row="1" column="0">
-             <widget class="QGroupBox" name="groupBox_2">
+            <item>
+             <widget class="ScopePanel" name="eegScope" native="true">
               <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="title">
-               <string>Filtering</string>
-              </property>
-              <layout class="QVBoxLayout" name="verticalLayout_4">
-               <item>
-                <widget class="QCheckBox" name="LowPassCheck">
-                 <property name="text">
-                  <string>Low pass</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QDoubleSpinBox" name="LowPassValue">
-                 <property name="maximum">
-                  <double>4096.000000000000000</double>
-                 </property>
-                 <property name="value">
-                  <double>100.000000000000000</double>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QCheckBox" name="HighPassCheck">
-                 <property name="text">
-                  <string>High pass</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QDoubleSpinBox" name="HighPassValue">
-                 <property name="maximum">
-                  <double>4096.000000000000000</double>
-                 </property>
-                 <property name="value">
-                  <double>1.000000000000000</double>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </widget>
-            </item>
-            <item row="2" column="0">
-             <widget class="QGroupBox" name="groupBox_3">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="title">
-               <string>Reference</string>
-              </property>
-              <layout class="QVBoxLayout" name="verticalLayout_5">
-               <item>
-                <widget class="QComboBox" name="ReferenceValue">
-                 <property name="styleSheet">
-                  <string notr="true">selection-background-color: rgb(136, 138, 133);</string>
-                 </property>
-                 <item>
-                  <property name="text">
-                   <string>None</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>Average</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>Electrode</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>Bipole</string>
-                  </property>
-                 </item>
-                </widget>
-               </item>
-               <item>
-                <widget class="QComboBox" name="ReferenceOpt">
-                 <property name="styleSheet">
-                  <string notr="true">selection-background-color: rgb(136, 138, 133);</string>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </widget>
-            </item>
-            <item row="3" column="0">
-             <widget class="QGroupBox" name="groupBox_4">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
+               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
               <property name="minimumSize">
                <size>
-                <width>119</width>
+                <width>0</width>
                 <height>0</height>
                </size>
               </property>
-              <property name="maximumSize">
-               <size>
-                <width>119</width>
-                <height>16777215</height>
-               </size>
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(255, 255, 255);</string>
               </property>
-              <property name="title">
-               <string>Electrodes</string>
-              </property>
-              <layout class="QVBoxLayout" name="verticalLayout_6">
-               <item>
-                <widget class="QListWidget" name="ChannelsList">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="minimumSize">
-                  <size>
-                   <width>0</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                 <property name="verticalScrollBarPolicy">
-                  <enum>Qt::ScrollBarAlwaysOn</enum>
-                 </property>
-                 <property name="sizeAdjustPolicy">
-                  <enum>QAbstractScrollArea::AdjustIgnored</enum>
-                 </property>
-                 <property name="selectionMode">
-                  <enum>QAbstractItemView::ExtendedSelection</enum>
-                 </property>
-                </widget>
-               </item>
-              </layout>
              </widget>
             </item>
            </layout>
-          </item>
-          <item row="0" column="3">
-           <layout class="QGridLayout" name="gridLayout_2">
-            <item row="6" column="0">
-             <spacer name="verticalSpacer">
-              <property name="orientation">
-               <enum>Qt::Vertical</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>20</width>
-                <height>40</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-            <item row="2" column="0">
-             <widget class="QGroupBox" name="groupBox_7">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>16777215</width>
-                <height>60</height>
-               </size>
-              </property>
-              <property name="title">
-               <string>Message rate:</string>
-              </property>
-              <layout class="QGridLayout" name="gridLayout_5">
-               <item row="0" column="0">
-                <widget class="QLabel" name="MessageRateLabel">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="text">
-                  <string>~ Hz</string>
-                 </property>
-                 <property name="alignment">
-                  <set>Qt::AlignCenter</set>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </widget>
-            </item>
-            <item row="3" column="0">
-             <widget class="QGroupBox" name="groupBox_9">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>16777215</width>
-                <height>60</height>
-               </size>
-              </property>
-              <property name="title">
-               <string>Message sequence:</string>
-              </property>
-              <layout class="QGridLayout" name="gridLayout_6">
-               <item row="0" column="0">
-                <widget class="QLabel" name="MessageSeqLabel">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="text">
-                  <string>0</string>
-                 </property>
-                 <property name="alignment">
-                  <set>Qt::AlignCenter</set>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </widget>
-            </item>
-            <item row="4" column="0">
-             <widget class="QGroupBox" name="groupBox_8">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>69</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>16777215</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="title">
-               <string>Time window:</string>
-              </property>
-              <layout class="QGridLayout" name="gridLayout_7">
-               <item row="0" column="0">
-                <widget class="QComboBox" name="TimeWindowValue">
-                 <property name="styleSheet">
-                  <string notr="true">selection-background-color: rgb(136, 138, 133);</string>
-                 </property>
-                 <property name="currentIndex">
-                  <number>3</number>
-                 </property>
-                 <item>
-                  <property name="text">
-                   <string>1 s</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>2 s</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>5 s</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>10 s</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>20 s</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>30 s</string>
-                  </property>
-                 </item>
-                </widget>
-               </item>
-              </layout>
-             </widget>
-            </item>
-            <item row="1" column="0">
-             <widget class="QGroupBox" name="groupBox_6">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>16777215</width>
-                <height>60</height>
-               </size>
-              </property>
-              <property name="title">
-               <string>Native rate:</string>
-              </property>
-              <layout class="QGridLayout" name="gridLayout_4">
-               <item row="0" column="0">
-                <widget class="QLabel" name="NativeRateLabel">
-                 <property name="text">
-                  <string>~ Hz</string>
-                 </property>
-                 <property name="alignment">
-                  <set>Qt::AlignCenter</set>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </widget>
-            </item>
-            <item row="0" column="0">
-             <widget class="QGroupBox" name="groupBox_5">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>150</width>
-                <height>118</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>0</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="title">
-               <string>Topic</string>
-              </property>
-              <layout class="QGridLayout" name="gridLayout_3">
-               <item row="0" column="0" colspan="2">
-                <widget class="QLineEdit" name="TopicValue">
-                 <property name="focusPolicy">
-                  <enum>Qt::StrongFocus</enum>
-                 </property>
-                 <property name="styleSheet">
-                  <string notr="true">background-color: rgb(255, 255, 255);</string>
-                 </property>
-                 <property name="text">
-                  <string>/neurodata</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="1" column="0">
-                <widget class="QLabel" name="label">
-                 <property name="text">
-                  <string>Status:</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="1" column="1">
-                <widget class="QLabel" name="TopicStatus">
-                 <property name="text">
-                  <string>Idle</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="2" column="0" colspan="2">
-                <widget class="QPushButton" name="TopicButton">
-                 <property name="enabled">
-                  <bool>true</bool>
-                 </property>
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="text">
-                  <string>Stop</string>
-                 </property>
-                 <property name="checkable">
-                  <bool>false</bool>
-                 </property>
-                 <property name="checked">
-                  <bool>false</bool>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </widget>
-            </item>
-            <item row="5" column="0">
-             <widget class="QGroupBox" name="groupBox_10">
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>69</height>
-               </size>
-              </property>
-              <property name="title">
-               <string>Data info:</string>
-              </property>
-              <widget class="QPushButton" name="InfoButton">
-               <property name="geometry">
-                <rect>
-                 <x>17</x>
-                 <y>33</y>
-                 <width>126</width>
-                 <height>25</height>
-                </rect>
-               </property>
-               <property name="text">
-                <string>info</string>
-               </property>
-              </widget>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item row="0" column="2">
-           <widget class="ScopePanel" name="eegScope" native="true">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">background-color: rgb(255, 255, 255);</string>
-            </property>
-           </widget>
           </item>
          </layout>
         </widget>
-        <widget class="QWidget" name="tab_2">
+        <widget class="QWidget" name="exg_tab">
          <property name="enabled">
           <bool>true</bool>
          </property>
          <attribute name="title">
           <string>EXG</string>
          </attribute>
+         <layout class="QGridLayout" name="gridLayout">
+          <item row="0" column="0">
+           <layout class="QHBoxLayout" name="horizontalLayout_3">
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_11">
+              <property name="rightMargin">
+               <number>0</number>
+              </property>
+              <item>
+               <widget class="QGroupBox" name="groupBox_11">
+                <property name="enabled">
+                 <bool>true</bool>
+                </property>
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>115</width>
+                  <height>69</height>
+                 </size>
+                </property>
+                <property name="title">
+                 <string>Scale</string>
+                </property>
+                <layout class="QVBoxLayout" name="verticalLayout_7">
+                 <item>
+                  <widget class="QComboBox" name="EXGScaleValue">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">selection-background-color: rgb(136, 138, 133);</string>
+                   </property>
+                   <property name="currentIndex">
+                    <number>5</number>
+                   </property>
+                   <item>
+                    <property name="text">
+                     <string>1 uV</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>2.5 uV</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>5 uV</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>10 uV</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>25 uV</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>50 uV</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>100 uV</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>250 uV</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>500 uV</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>1 mV</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>2.5 mV</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>5 mV</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>10 mV</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>25 mV</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>50 mV</string>
+                    </property>
+                   </item>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <widget class="QGroupBox" name="groupBox_12">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="title">
+                 <string>Filtering</string>
+                </property>
+                <layout class="QVBoxLayout" name="verticalLayout_8">
+                 <item>
+                  <widget class="QCheckBox" name="EXGLowPassCheck">
+                   <property name="text">
+                    <string>Low pass</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QDoubleSpinBox" name="EXGLowPassValue">
+                   <property name="maximum">
+                    <double>4096.000000000000000</double>
+                   </property>
+                   <property name="value">
+                    <double>100.000000000000000</double>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QCheckBox" name="EXGHighPassCheck">
+                   <property name="text">
+                    <string>High pass</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QDoubleSpinBox" name="EXGHighPassValue">
+                   <property name="maximum">
+                    <double>4096.000000000000000</double>
+                   </property>
+                   <property name="value">
+                    <double>1.000000000000000</double>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <widget class="QGroupBox" name="groupBox_13">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="title">
+                 <string>Reference</string>
+                </property>
+                <layout class="QVBoxLayout" name="verticalLayout_9">
+                 <item>
+                  <widget class="QComboBox" name="EXGReferenceValue">
+                   <property name="styleSheet">
+                    <string notr="true">selection-background-color: rgb(136, 138, 133);</string>
+                   </property>
+                   <item>
+                    <property name="text">
+                     <string>None</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Average</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Electrode</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Bipole</string>
+                    </property>
+                   </item>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QComboBox" name="EXGReferenceOpt">
+                   <property name="styleSheet">
+                    <string notr="true">selection-background-color: rgb(136, 138, 133);</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <widget class="QGroupBox" name="groupBox_14">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>69</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <property name="title">
+                 <string>Time window:</string>
+                </property>
+                <layout class="QGridLayout" name="gridLayout_9">
+                 <item row="0" column="0">
+                  <widget class="QComboBox" name="EXGTimeWindowValue">
+                   <property name="styleSheet">
+                    <string notr="true">selection-background-color: rgb(136, 138, 133);</string>
+                   </property>
+                   <property name="currentIndex">
+                    <number>3</number>
+                   </property>
+                   <item>
+                    <property name="text">
+                     <string>1 s</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>2 s</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>5 s</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>10 s</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>20 s</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>30 s</string>
+                    </property>
+                   </item>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <spacer name="verticalSpacer_2">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>40</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="ScopePanel" name="exgScope" native="true">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(255, 255, 255);</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
         </widget>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="2" column="0">
+       <widget class="QGroupBox" name="groupBox_7">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>60</height>
+         </size>
+        </property>
+        <property name="title">
+         <string>Message rate:</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_5">
+         <item row="0" column="0">
+          <widget class="QLabel" name="MessageRateLabel">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>~ Hz</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QGroupBox" name="groupBox_6">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>60</height>
+         </size>
+        </property>
+        <property name="title">
+         <string>Native rate:</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_4">
+         <item row="0" column="0">
+          <widget class="QLabel" name="NativeRateLabel">
+           <property name="text">
+            <string>~ Hz</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QGroupBox" name="groupBox_9">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>60</height>
+         </size>
+        </property>
+        <property name="title">
+         <string>Message sequence:</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_6">
+         <item row="0" column="0">
+          <widget class="QLabel" name="MessageSeqLabel">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>0</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QGroupBox" name="groupBox_5">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>150</width>
+          <height>118</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>0</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="title">
+         <string>Topic</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_3">
+         <item row="0" column="0" colspan="2">
+          <widget class="QLineEdit" name="TopicValue">
+           <property name="focusPolicy">
+            <enum>Qt::StrongFocus</enum>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(255, 255, 255);</string>
+           </property>
+           <property name="text">
+            <string>/neurodata</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="label">
+           <property name="text">
+            <string>Status:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLabel" name="TopicStatus">
+           <property name="text">
+            <string>Idle</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0" colspan="2">
+          <widget class="QPushButton" name="TopicButton">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Stop</string>
+           </property>
+           <property name="checkable">
+            <bool>false</bool>
+           </property>
+           <property name="checked">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="QGroupBox" name="groupBox_10">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>69</height>
+         </size>
+        </property>
+        <property name="title">
+         <string>Data info:</string>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_2">
+         <item>
+          <widget class="QPushButton" name="InfoButton">
+           <property name="text">
+            <string>info</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="6" column="0">
+       <widget class="QGroupBox" name="groupBox_4">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>161</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>119</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="title">
+         <string>Electrodes</string>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_6">
+         <item>
+          <widget class="QListWidget" name="ChannelsList">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>20</height>
+            </size>
+           </property>
+           <property name="verticalScrollBarPolicy">
+            <enum>Qt::ScrollBarAlwaysOn</enum>
+           </property>
+           <property name="sizeAdjustPolicy">
+            <enum>QAbstractScrollArea::AdjustIgnored</enum>
+           </property>
+           <property name="selectionMode">
+            <enum>QAbstractItemView::ExtendedSelection</enum>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </widget>
       </item>
      </layout>
@@ -657,7 +982,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1010</width>
+     <width>992</width>
      <height>22</height>
     </rect>
    </property>
@@ -673,17 +998,16 @@
   </customwidget>
  </customwidgets>
  <tabstops>
-  <tabstop>tabWidget</tabstop>
-  <tabstop>ScaleValue</tabstop>
-  <tabstop>LowPassCheck</tabstop>
-  <tabstop>LowPassValue</tabstop>
-  <tabstop>HighPassCheck</tabstop>
-  <tabstop>HighPassValue</tabstop>
-  <tabstop>ReferenceValue</tabstop>
-  <tabstop>ReferenceOpt</tabstop>
+  <tabstop>EEGScaleValue</tabstop>
+  <tabstop>EEGLowPassCheck</tabstop>
+  <tabstop>EEGLowPassValue</tabstop>
+  <tabstop>EEGHighPassCheck</tabstop>
+  <tabstop>EEGHighPassValue</tabstop>
+  <tabstop>EEGReferenceValue</tabstop>
+  <tabstop>EEGReferenceOpt</tabstop>
   <tabstop>TopicValue</tabstop>
   <tabstop>TopicButton</tabstop>
-  <tabstop>TimeWindowValue</tabstop>
+  <tabstop>EEGTimeWindowValue</tabstop>
  </tabstops>
  <resources/>
  <connections/>

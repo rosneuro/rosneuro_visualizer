@@ -5,50 +5,117 @@ MainWindow::MainWindow(QWidget *parent) :  QMainWindow(parent),
 										   ui_(new Ui::NeuroVizPanel) {
 
 	this->ui_->setupUi(this);
+
+	this->addPanel(new EEGPanel("EEG", parent));
+	this->addPanel(new EXGPanel("EXG", parent));
+
+	this->set_current_panel();
+
+
+	// UI callbacks
+	QObject::connect(this->ui_->NeuroTab, SIGNAL(currentChanged(int)),this, SLOT(on_TabChanged(int)));
+	QObject::connect(this->ui_->InfoButton, SIGNAL(clicked()), SLOT(on_InfoEvent()));
+	QObject::connect(this->ui_->TopicValue, SIGNAL(returnPressed()), SLOT(on_StartEvent()));
+	QObject::connect(this->ui_->StopButton, SIGNAL(clicked()), SLOT(on_StopEvent()));
+
+	// DataThread callbacks
+	QObject::connect(&(this->thread_data_),&DataThread::sig_first_message, this, &MainWindow::on_FirstMessage);
+	QObject::connect(&(this->thread_data_),&DataThread::sig_message_info, this, &MainWindow::on_MessageInfo);
+	QObject::connect(&(this->thread_data_),&DataThread::sig_data_available, this, &MainWindow::on_DataAvailable);
+
+
 	
-	this->scope_ = this->ui_->eegScope;
-
-	this->ui_->TopicButton->setDisabled(true);
-	this->ui_->InfoButton->setDisabled(true);
-	this->ui_->ReferenceOpt->setDisabled(true);
-
-	this->filter_lp_.set_type(0);
-	this->filter_hp_.set_type(1);
-
-	// UI Signals
-	QObject::connect(this->ui_->TopicButton, SIGNAL(clicked()), SLOT(on_TopicButton()));
-	QObject::connect(this->ui_->InfoButton, SIGNAL(clicked()), SLOT(on_InfoButton()));
-	QObject::connect(this->ui_->TopicValue, SIGNAL(returnPressed()), SLOT(on_TopicValueChanged()));
-	QObject::connect(this->ui_->ChannelsList, SIGNAL(itemSelectionChanged()), SLOT(on_ChannelsChanged()));
-	QObject::connect(this->ui_->ScaleValue, SIGNAL(currentIndexChanged(int)), SLOT(on_ScaleChanged()));
-	QObject::connect(this->ui_->TimeWindowValue, SIGNAL(currentIndexChanged(int)), SLOT(on_WindowChanged()));
-	QObject::connect(this->ui_->ReferenceValue, SIGNAL(currentIndexChanged(int)), SLOT(on_ReferenceChanged()));
-	QObject::connect(this->ui_->ReferenceOpt, SIGNAL(currentIndexChanged(int)), SLOT(on_RefElectrodeChanged()));
-	QObject::connect(this->ui_->LowPassCheck, SIGNAL(stateChanged(int)), SLOT(on_LowPassCheckChanged()));
-	QObject::connect(this->ui_->LowPassValue, SIGNAL(valueChanged(double)), SLOT(on_LowPassValueChanged()));
-	QObject::connect(this->ui_->HighPassCheck, SIGNAL(stateChanged(int)), SLOT(on_HighPassCheckChanged()));
-	QObject::connect(this->ui_->HighPassValue, SIGNAL(valueChanged(double)), SLOT(on_HighPassValueChanged()));
-
-	// Thread signals
-	QObject::connect(&(this->thread_),&DataThread::sig_data_info,this,&MainWindow::on_DataInfo);
-	QObject::connect(&(this->thread_),&DataThread::sig_message_info,this, &MainWindow::on_MessageInfo);
-	QObject::connect(&(this->thread_),&DataThread::sig_data_available,this, &MainWindow::on_DataAvailable);
 }
 
 MainWindow::~MainWindow(void) {
+	this->destroy_panel_widgets();
 	delete this->ui_;
 }
 
-void MainWindow::on_TopicButton(void) {
-	this->ui_->TopicStatus->setText("Idle");
-	this->ui_->TopicButton->setDisabled(true);
-	this->ui_->InfoButton->setDisabled(true);
-
-	// and stop thread
-	this->thread_.stop_thread();
+void MainWindow::addPanel(NeuroPanel* panel) {
+	this->ui_->NeuroTab->addTab(panel, panel->name());
 }
 
-void MainWindow::on_InfoButton(void) {
+void MainWindow::set_current_panel(void) {
+	
+	int panelIdx = this->ui_->NeuroTab->currentIndex();	
+	int ntabs = this->ui_->NeuroTab->count();
+	
+	for(auto i=0; i<ntabs; ++i) {
+		dynamic_cast<NeuroPanel*>(this->ui_->NeuroTab->widget(i))->reset();
+	}
+
+	this->current_panel_ = dynamic_cast<NeuroPanel*>(this->ui_->NeuroTab->widget(panelIdx));
+}
+
+void MainWindow::destroy_panel_widgets(void) {
+	int ntabs = this->ui_->NeuroTab->count();
+
+	for(auto i=0; i<ntabs; ++i) {
+		QWidget* w = this->ui_->NeuroTab->widget(i);
+		delete w;
+	}
+}
+
+void MainWindow::on_StartEvent(void) {
+
+	// If the topic is empty, then return
+	if(this->ui_->TopicValue->text().isEmpty() == true)
+		return;
+
+	// Setup the GUI (StopButton enabled, Status Running, InfoButton disabled)
+	this->ui_->StopButton->setEnabled(true);
+	this->ui_->AcquisitionStatus->setText("Running");
+	this->ui_->InfoButton->setDisabled(true);
+
+	// Reset data information (sampling rate, message rate and sequence number)
+	this->set_samplerate(0);
+	this->set_messagerate(0);
+	this->set_messagesequence(0);
+
+	// Reset channel labels (EEG, EMG, TRI)
+	this->reset_channel_labels();
+
+	// Restart acquisition thread
+	this->thread_data_.stop_thread();
+	this->thread_data_.set_topic(this->ui_->TopicValue->text().toStdString());
+	this->thread_data_.start_thread();            
+}
+
+void MainWindow::on_StopEvent(void) {
+	
+	// Setup the GUI (StopButton disabled, Status Idle)
+	this->ui_->StopButton->setDisabled(true);
+	this->ui_->AcquisitionStatus->setText("Idle");
+
+	// Stop acquisition thread
+	this->thread_data_.stop_thread();
+}
+
+void MainWindow::on_FirstMessage(rosneuro_msgs::NeuroFrame frame) {
+	
+	// Setup data information (sampling rate, data info)
+	this->set_samplerate(frame.sr);
+	this->set_info(frame);
+
+	// Store channel labels (EEM, EMG, TRI)
+	this->store_channel_labels(frame);
+
+	// Setup the GUI (info button enabled)
+	this->ui_->InfoButton->setEnabled(true);
+
+	this->current_panel_->setup(frame);
+
+}
+
+void MainWindow::on_MessageInfo(unsigned int sequence, float rate) {
+
+	// Setup message informatio (message rate and sequence)
+	this->set_messagerate(rate);
+	this->set_messagesequence(sequence);
+}
+
+void MainWindow::on_InfoEvent(void) {
 
 	QMessageBox msgBox(this);
 	msgBox.setIcon(QMessageBox::Information);
@@ -57,187 +124,102 @@ void MainWindow::on_InfoButton(void) {
 	msgBox.exec();
 }
 
-void MainWindow::on_TopicValueChanged(void) {
-
-	if(this->ui_->TopicValue->text().isEmpty() == false) {
-		// UI callbacks
-		this->ui_->TopicButton->setEnabled(true);
-		this->ui_->InfoButton->setEnabled(true);
-		this->ui_->TopicStatus->setText("Running");
+void MainWindow::set_samplerate(float rate) {
+	this->samplerate_ = rate;
 	
-		// Thread restart
-		this->thread_.stop_thread();
-		this->thread_.set_topic(this->ui_->TopicValue->text().toStdString());
-		this->thread_.start_thread();            
-	}                                            
-}                                                
-                                                
-void MainWindow::on_DataInfo(float samplerate, unsigned int nchannels, 
-							QList<QString> labels, QString info) {
-
-	// Setting UI interface
-	this->ui_set_samplerate(samplerate);
-	this->ui_set_channels(labels);
-	this->ui_set_info(info);
-
-	// Setting internal buffer
-	this->samplerate_ = samplerate;
-	unsigned int nsamples = this->samplerate_ * this->window_size_;
-	this->buffer_.reset(nsamples, nchannels);
-
-	// Setting Scope panel
-	this->scope_->setup(nsamples, nchannels);
-	this->scope_->set_channel_labels(labels);
-}
-
-void MainWindow::on_ChannelsChanged(void) {
-
-	this->channel_index_selected_.clear();
-
-	for(QListWidgetItem *item: this->ui_->ChannelsList->selectedItems()){
-    	this->channel_index_selected_.push_back(this->ui_->ChannelsList->row(item));
-	}
-}
-
-void MainWindow::on_ScaleChanged(void) {
-	int currentIdx = this->ui_->ScaleValue->currentIndex();
-	
-	// Setting scale on the scope
-	this->scope_->set_scale(this->scales_.at(currentIdx));
-}
-
-void MainWindow::on_WindowChanged(void) {
-	
-	int currentIdx = this->ui_->TimeWindowValue->currentIndex();
-	this->window_size_ = this->windows_.at(currentIdx);
-	// Reset buffer and scope
-	
-	unsigned int nchannels = this->buffer_.channels();
-	unsigned int nsamples  = this->window_size_ * this->samplerate_;
-
-	this->buffer_.reset(nsamples, nchannels);
-	this->scope_->setup(nsamples, this->channel_index_selected_.size());
-}
-
-void MainWindow::on_ReferenceChanged(void) {
-	this->reference_ = this->ui_->ReferenceValue->currentIndex();
-	if(this->reference_ == References::ELECTRODE) {
-		this->ui_->ReferenceOpt->setEnabled(true);
-	} else {
-		this->ui_->ReferenceOpt->setDisabled(true);
-	}
-}
-
-void MainWindow::on_RefElectrodeChanged(void) {
-
-	this->ref_electrode_ = this->ui_->ReferenceOpt->currentIndex();
-}
-
-void MainWindow::ui_set_samplerate(float samplerate) {
 	QString qsamplerate = "~";
-	if (samplerate != 0)
-		qsamplerate = QString::number(samplerate);
+	if (rate != 0)
+		qsamplerate = QString::number(rate);
 
 	this->ui_->NativeRateLabel->setText(qsamplerate + " Hz");
 }
 
-void MainWindow::on_LowPassCheckChanged(void) {
+void MainWindow::set_messagerate(float rate) {
+	this->messagerate_ = rate;
 
-	this->is_lowpass_enabled_ = this->ui_->LowPassCheck->isChecked();
-
-	int order = 2;
-	if (this->is_lowpass_enabled_ == true) {
-		this->lowpass_cutoff_ = this->ui_->LowPassValue->value();
-		this->filter_lp_.setup(order, this->samplerate_, this->lowpass_cutoff_, this->buffer_.channels());
-	}
-}
-
-void MainWindow::on_LowPassValueChanged(void) {
-
-	int order = 2;
-	this->lowpass_cutoff_ = this->ui_->LowPassValue->value();
-	if (this->is_lowpass_enabled_ == true) {
-		this->filter_lp_.setup(order, this->samplerate_, this->lowpass_cutoff_, this->buffer_.channels());
-	}
-}
-void MainWindow::on_HighPassCheckChanged(void) {
-
-	this->is_highpass_enabled_ = this->ui_->HighPassCheck->isChecked();
-
-	int order = 2;
-	if (this->is_highpass_enabled_ == true) {
-		this->highpass_cutoff_ = this->ui_->HighPassValue->value();
-		this->filter_hp_.setup(order, this->samplerate_, this->highpass_cutoff_, this->buffer_.channels());
-	}
-}
-
-void MainWindow::on_HighPassValueChanged(void) {
-
-	int order = 2;
-	this->highpass_cutoff_ = this->ui_->HighPassValue->value();
-	if (this->is_highpass_enabled_ == true) {
-		this->filter_hp_.setup(order, this->samplerate_, this->highpass_cutoff_, this->buffer_.channels());
-	}
-}
-
-void MainWindow::ui_set_channels(const QList<QString>& labels) {
-
-	for(auto it = labels.begin(); it != labels.end(); ++it) {
-		this->ui_->ChannelsList->addItem(*it);
-	}
-	this->ui_->ChannelsList->selectAll();
-	
-	for(auto it = labels.begin(); it != labels.end(); ++it) {
-		this->ui_->ReferenceOpt->addItem(*it);
-	}
-}
-
-
-void MainWindow::ui_set_info(const QString& info) {
-	this->info_ = info;
-}
-
-
-
-void MainWindow::on_MessageInfo(unsigned int sequence, float rate) {
 	QString qrate = "~";
 	if (rate != 0)
 		qrate = QString::number(rate, 'G', 3);
                                 
-	// Setting message rate
 	this->ui_->MessageRateLabel->setText(qrate + " Hz");
+}
 
-	// Setting message sequence
+void MainWindow::set_messagesequence(unsigned int sequence) {
+	this->sequence_ = sequence;
 	this->ui_->MessageSeqLabel->setText(QString::number(sequence));
 }
 
-void MainWindow::on_DataAvailable(std::vector<float> data) {
+void MainWindow::store_channel_labels(const rosneuro_msgs::NeuroFrame& frame) {
 
-	if(this->is_lowpass_enabled_ == true) {
-		this->filter_lp_.apply(data);
-	}
+	for(auto it = frame.eeg.info.labels.begin(); it != frame.eeg.info.labels.end(); ++it)
+		this->eeg_labels_.push_back(QString::fromStdString(*it));
 	
-	if(this->is_highpass_enabled_ == true) {
-		this->filter_hp_.apply(data);
-	}
-
-
-
-	switch(this->reference_) {
-		case References::AVERAGE:
-			FilterCar::apply(data, this->buffer_.channels());
-			break;
-		case References::ELECTRODE:
-			FilterReference::apply(data, this->buffer_.channels(), this->ref_electrode_);
-			break;
-		default:
-			break;
-	}
+	for(auto it = frame.exg.info.labels.begin(); it != frame.exg.info.labels.end(); ++it)
+		this->exg_labels_.push_back(QString::fromStdString(*it));
 	
-	this->buffer_.add(data);	
-
-	this->scope_->draw(this->buffer_, this->channel_index_selected_);
+	for(auto it = frame.tri.info.labels.begin(); it != frame.tri.info.labels.end(); ++it)
+		this->tri_labels_.push_back(QString::fromStdString(*it));
 }
+
+void MainWindow::reset_channel_labels(void) {
+	this->eeg_labels_.clear();
+	this->exg_labels_.clear();
+	this->tri_labels_.clear();
+}
+
+void MainWindow::set_info(const rosneuro_msgs::NeuroFrame& frame) {
+
+	this->info_ = "EEG info:\n" + 
+				  QString::fromStdString(this->to_string(frame.eeg.info)) +
+				  "\nEXG info:\n" +
+				  QString::fromStdString(this->to_string(frame.exg.info)) +
+				  "\nTRI info:\n" +
+				  QString::fromStdString(this->to_string(frame.tri.info));
+}
+
+std::string MainWindow::to_string(const rosneuro_msgs::NeuroDataInfo& info) {
+	std::string str_info =	"Number of channels: " + std::to_string(info.nchannels) + "\n" + 
+							"Unit: " + info.unit + "\n" +
+							"Transducter: " + info.transducter + "\n" +
+							"Prefiltering: " + info.prefiltering + "\n";
+
+	str_info += "Min/max values: [ ";
+	for (auto it = info.minmax.begin(); it != info.minmax.end(); ++it)
+		str_info += std::to_string(*it) + " ";
+	str_info += "]\n";
+
+	return str_info;
+}
+
+
+/******************************************************************************/
+// UI Callbacks
+/******************************************************************************/
+
+void MainWindow::on_TabChanged(int index) {
+	this->set_current_panel();
+}
+
+/******************************************************************************/
+// DataThread Callbacks
+/******************************************************************************/
+
+
+
+void MainWindow::on_DataAvailable(rosneuro_msgs::NeuroFrame frame) {
+
+
+	// Setup the current widget
+	if(this->current_panel_->isset() == false) {
+		this->current_panel_->setup(frame);
+	}
+
+
+	if(this->current_panel_->isset() == true) {
+		this->current_panel_->draw();
+	}
+}
+
 
 
 

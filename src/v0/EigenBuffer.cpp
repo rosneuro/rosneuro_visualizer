@@ -1,12 +1,13 @@
 #include "rosneuro_visualizer/EigenBuffer.hpp"
 
+EigenBuffer::EigenBuffer(void) {}
+
 EigenBuffer::EigenBuffer(unsigned int nsamples, unsigned int nchannels) {
 
 	this->reset(nsamples, nchannels);
 }
 
-EigenBuffer::~EigenBuffer(void) {
-}
+EigenBuffer::~EigenBuffer(void) {}
 
 void EigenBuffer::reset(unsigned int nsamples, unsigned int nchannels) {
 
@@ -16,6 +17,7 @@ void EigenBuffer::reset(unsigned int nsamples, unsigned int nchannels) {
 	// CAREFUL! Internal buffer representation is channels x samples to avoid
 	// transposition
 	this->buffer_ = Eigen::MatrixXf::Zero(nchannels, nsamples);
+
 	this->index_ = 0;
 }
 
@@ -44,7 +46,7 @@ bool EigenBuffer::add(const std::vector<float>& data) {
 	// then return false
 	if(data_nsamples > this->samples())
 		return false;
-
+	
 	// CAREFUL! Internal buffer representation is channels x samples to avoid
 	// transposition
 	Eigen::Map<Eigen::MatrixXf> frame(const_cast<float*>(data.data()), data_nchannels, data_nsamples);
@@ -56,6 +58,10 @@ bool EigenBuffer::add(const std::vector<float>& data) {
 		this->index_ = 0;
 
 	return true;
+}
+
+const void EigenBuffer::get(const Eigen::Ref<const Eigen::MatrixXf>& out) const {
+	//return this->buffer_;
 }
 
 const float EigenBuffer::at(unsigned int sampleId, unsigned int channelId) const {
