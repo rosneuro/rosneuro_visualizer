@@ -56,7 +56,7 @@ void TemporalPlot::setup(unsigned int nsamples, const std::vector<int>& channel_
 
 	unsigned int nchannels = channel_selected.size();
 	this->channel_selected_index_ = channel_selected;
-
+	
 	// Setting un y-ticker (channels)
 	this->set_axis_y(nchannels);
 	
@@ -70,12 +70,14 @@ void TemporalPlot::setup(unsigned int nsamples, const std::vector<int>& channel_
 
 	// Create x-values vector
 	this->x_.clear();
-	for(auto i=0; i<nsamples; i++)
+	//for(auto i=0; i<nsamples; ++i)
+	for(auto i=0; i<nsamples; i+=this->decimation_)
 		this->x_.push_back(i);	
 	
 	// Create TMP y-values vector
 	this->y_.clear();
-	for(auto i=0; i<nsamples; i++)
+	//for(auto i=0; i<nsamples; i++)
+	for(auto i=0; i<nsamples; i+=this->decimation_)
 		this->y_.push_back(1);	
 
 }
@@ -116,6 +118,7 @@ void TemporalPlot::set_axis_x(unsigned int nsamples) {
 
 	unsigned int ustep = static_cast<unsigned int>(step);
 	unsigned int uwin  = static_cast<unsigned int>(this->time_window_);
+	//float samplerate = nsamples/this->time_window_;
 	float samplerate = nsamples/this->time_window_;
 	
 	for(auto i=0; i<uwin; i+=ustep) {
@@ -125,7 +128,8 @@ void TemporalPlot::set_axis_x(unsigned int nsamples) {
 
 	// Setting x for the plot
 	this->x_.clear();
-	for(auto i=0; i<nsamples; i++)
+	//for(auto i=0; i<nsamples; ++i)
+	for(auto i=0; i<nsamples; i+=this->decimation_)
 		this->x_.push_back(i);
 
 	this->xAxis->setTicker(this->xticker_);
@@ -140,12 +144,15 @@ void TemporalPlot::plot(const EigenBuffer& buffer) {
 	unsigned int pIdx = 0;
 	this->palette_.reset();
 
+	unsigned int nsamples  = buffer.samples();
 	unsigned int nchannels = this->channel_selected_index_.size();
 	unsigned int chIdx = 0;
 	for(auto cit=this->channel_selected_index_.begin(); cit!=this->channel_selected_index_.end(); ++cit) {
 		this->y_.clear();
-		for(auto sit=this->x_.begin(); sit!=this->x_.end(); ++sit) {
-			this->y_.push_back(this->rescale(buffer.at((*sit), (*cit)), this->scale_) + nchannels - chIdx);
+		//for(auto sit=this->x_.begin(); sit!=this->x_.end(); ++sit) {
+		for(auto sit=0; sit<nsamples; sit += this->decimation_) {
+			//this->y_.push_back(this->rescale(buffer.at((*sit), (*cit)), this->scale_) + nchannels - chIdx);
+			this->y_.push_back(this->rescale(buffer.at(sit, (*cit)), this->scale_) + nchannels - chIdx);
 		}
 
 		this->graph(chIdx)->setData(this->x_, this->y_);

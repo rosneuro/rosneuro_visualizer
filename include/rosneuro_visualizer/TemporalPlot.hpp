@@ -45,6 +45,8 @@ class TemporalPlot : public QCustomPlot {
 		float 				time_window_;
  		
 		Palette	palette_;
+
+		int decimation_ = 4;
 };
 
 
