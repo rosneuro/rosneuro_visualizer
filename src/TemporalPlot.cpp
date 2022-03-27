@@ -57,29 +57,16 @@ void TemporalPlot::setup(unsigned int nsamples, const std::vector<int>& channel_
 	unsigned int nchannels = channel_selected.size();
 	this->channel_selected_index_ = channel_selected;
 	
+	// Adding graph for each channel
+	this->clearGraphs();
+	for(auto i=0; i<nchannels; i++)
+		this->addGraph();
+	
 	// Setting un y-ticker (channels)
 	this->set_axis_y(nchannels);
 	
 	// Setting un x-ticker (samples)
 	this->set_axis_x(nsamples);
-
-	// Adding graph for each channel
-	this->clearGraphs();
-	for(auto i=0; i<nchannels; i++)
-		this->addGraph();
-
-	// Create x-values vector
-	this->x_.clear();
-	//for(auto i=0; i<nsamples; ++i)
-	for(auto i=0; i<nsamples; i+=this->decimation_)
-		this->x_.push_back(i);	
-	
-	// Create TMP y-values vector
-	this->y_.clear();
-	//for(auto i=0; i<nsamples; i++)
-	for(auto i=0; i<nsamples; i+=this->decimation_)
-		this->y_.push_back(1);	
-
 }
 
 void TemporalPlot::set_scale(double scale) {
@@ -118,7 +105,6 @@ void TemporalPlot::set_axis_x(unsigned int nsamples) {
 
 	unsigned int ustep = static_cast<unsigned int>(step);
 	unsigned int uwin  = static_cast<unsigned int>(this->time_window_);
-	//float samplerate = nsamples/this->time_window_;
 	float samplerate = nsamples/this->time_window_;
 	
 	for(auto i=0; i<uwin; i+=ustep) {
@@ -126,9 +112,10 @@ void TemporalPlot::set_axis_x(unsigned int nsamples) {
 	}
 	this->xticker_->addTick(uwin*samplerate, QString::number(uwin) + " s");
 
+	this->decimation_ = samplerate / 100;
+
 	// Setting x for the plot
 	this->x_.clear();
-	//for(auto i=0; i<nsamples; ++i)
 	for(auto i=0; i<nsamples; i+=this->decimation_)
 		this->x_.push_back(i);
 
@@ -149,9 +136,7 @@ void TemporalPlot::plot(const EigenBuffer& buffer) {
 	unsigned int chIdx = 0;
 	for(auto cit=this->channel_selected_index_.begin(); cit!=this->channel_selected_index_.end(); ++cit) {
 		this->y_.clear();
-		//for(auto sit=this->x_.begin(); sit!=this->x_.end(); ++sit) {
 		for(auto sit=0; sit<nsamples; sit += this->decimation_) {
-			//this->y_.push_back(this->rescale(buffer.at((*sit), (*cit)), this->scale_) + nchannels - chIdx);
 			this->y_.push_back(this->rescale(buffer.at(sit, (*cit)), this->scale_) + nchannels - chIdx);
 		}
 
@@ -163,23 +148,6 @@ void TemporalPlot::plot(const EigenBuffer& buffer) {
 
 		chIdx++;
 	}
-
-
-	/*
-	for(auto ch = 0; ch<nchannels; ch++) {
-		unsigned int chInd = chindex.at(ch);
-		for(auto sp = 0; sp<nsamples; sp++) {
-			yvalues[sp] = this->remap(buffer.at(sp, chInd), this->scale_) + nchannels - ch;
-		}
-
-		this->graph(ch)->setData(xvalues, yvalues);
-
-		QColor color = this->palette_.get();
-		this->pengraph_.setColor(color);
-		this->graph(ch)->setPen(this->pengraph_);
-		this->palette_.next();
-	}
-	*/
 
 	this->replot();
 }
