@@ -2,6 +2,7 @@
 #define ROSNEURO_VISUALIZER_SCOPEPANEL_HPP
 
 #include <numeric>
+#include <QTimer>
 #include "src/ui_neuroviz_timescope.h"
 #include "rosneuro_visualizer/NeuroPanel.hpp"
 #include "rosneuro_visualizer/TemporalPlot.hpp"
@@ -22,9 +23,10 @@ class ScopePanel : public NeuroPanel {
 		virtual bool setup(const rosneuro_msgs::NeuroFrame& frame);
 		virtual void reset(void);
 		virtual void update(const rosneuro_msgs::NeuroFrame& frame);
-		virtual void draw(void);
+
 
 	public slots:
+	    void draw(void);
 		void on_ChannelSelection(void);
 		void on_ScaleChanged(int index);
 		void on_TimeWindowChanged(int index);
@@ -71,6 +73,7 @@ class ScopePanel : public NeuroPanel {
 											 10000.0f, 25000.0f, 50000.0f};
 		const std::vector<double> 	windows_ = {1.0f, 2.0f, 5.0f, 10.0f, 20.0f, 30.0f};
 
+		QTimer plotter_;
 
 };
 

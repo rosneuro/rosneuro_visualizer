@@ -47,7 +47,7 @@ TemporalPlot::TemporalPlot(QWidget* parent) : QCustomPlot(parent)  {
 	this->palette_.add(QColor(153,  76,   0)); // brown
 	this->palette_.add(QColor(255,   0, 255)); // pink
 	this->palette_.add(QColor(  0, 255, 255)); // cyan
-
+	this->setNotAntialiasedElements(QCP::aeAll);
 }
 
 TemporalPlot::~TemporalPlot(void) {}
@@ -67,6 +67,15 @@ void TemporalPlot::setup(unsigned int nsamples, const std::vector<int>& channel_
 	
 	// Setting un x-ticker (samples)
 	this->set_axis_x(nsamples);
+
+	// Set palette and pen
+	this->palette_.reset();
+
+	for (auto chId = 0; chId < nchannels; chId++) {
+		this->pengraph_.setColor(this->palette_.get());
+		this->graph(chId)->setPen(this->pengraph_);
+		this->palette_.next();
+	}
 }
 
 void TemporalPlot::set_scale(double scale) {
@@ -112,7 +121,7 @@ void TemporalPlot::set_axis_x(unsigned int nsamples) {
 	}
 	this->xticker_->addTick(uwin*samplerate, QString::number(uwin) + " s");
 
-	this->decimation_ = samplerate / 100;
+	this->decimation_ = this->decimation_time_ * samplerate / 1000;
 
 	// Setting x for the plot
 	this->x_.clear();
@@ -129,27 +138,21 @@ void TemporalPlot::plot(const EigenBuffer& buffer) {
 
 	// Create y-values vector
 	unsigned int pIdx = 0;
-	this->palette_.reset();
 
 	unsigned int nsamples  = buffer.samples();
 	unsigned int nchannels = this->channel_selected_index_.size();
 	unsigned int chIdx = 0;
+
 	for(auto cit=this->channel_selected_index_.begin(); cit!=this->channel_selected_index_.end(); ++cit) {
 		this->y_.clear();
 		for(auto sit=0; sit<nsamples; sit += this->decimation_) {
 			this->y_.push_back(this->rescale(buffer.at(sit, (*cit)), this->scale_) + nchannels - chIdx);
 		}
-
 		this->graph(chIdx)->setData(this->x_, this->y_);
-
-		this->pengraph_.setColor(this->palette_.get());
-		this->graph(chIdx)->setPen(this->pengraph_);
-		this->palette_.next();
-
+		
 		chIdx++;
 	}
-
-	this->replot();
+	this->replot(QCustomPlot::rpQueuedReplot);
 }
 
 double TemporalPlot::rescale(double value, double scale) {

@@ -217,7 +217,6 @@ void MainWindow::on_TabChanged(int index) {
 
 void MainWindow::on_DataAvailable(rosneuro_msgs::NeuroFrame frame) {
 
-
 	// Setup the current widget
 	if(this->current_panel_->isset() == false) {
 		this->current_panel_->setup(frame);
@@ -227,10 +226,7 @@ void MainWindow::on_DataAvailable(rosneuro_msgs::NeuroFrame frame) {
 	if(this->current_panel_->isset() == true) {
 		this->current_panel_->update(frame);
 	}
-		
-	if(this->current_panel_->isset() == true) {
-		this->current_panel_->draw();
-	}
+	
 }
 
 

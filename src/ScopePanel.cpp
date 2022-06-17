@@ -34,6 +34,9 @@ ScopePanel::ScopePanel(QString name, QWidget* parent) : NeuroPanel(name, parent)
 	QObject::connect(this->ui_->HighPassCheck, SIGNAL(stateChanged(int)), SLOT(on_HighPassCheckChanged(int)));
 	QObject::connect(this->ui_->HighPassValue, SIGNAL(valueChanged(double)), SLOT(on_HighPassValueChanged(double)));
 
+	QObject::connect(&(this->plotter_), SIGNAL(timeout()), this, SLOT(draw()));
+	this->plotter_.start(80);
+
 }
 
 ScopePanel::~ScopePanel(void) {
@@ -75,6 +78,7 @@ bool ScopePanel::setup(const rosneuro_msgs::NeuroFrame& frame) {
 
 	// Setup channels (and channel labels)
 	this->reset_channels();
+	
 
 	this->nchannels_ = datainfo.nchannels;
 	for(auto it=datainfo.labels.begin(); it!=datainfo.labels.end(); ++it) {
@@ -85,11 +89,9 @@ bool ScopePanel::setup(const rosneuro_msgs::NeuroFrame& frame) {
 		this->ui_->ChannelsList->addItem((*it));
 		this->ui_->ReferenceOpt->addItem(*it);
 	}
-	this->ui_->ChannelsList->selectAll();
 
 	std::iota(this->channel_selected_index_.begin(), this->channel_selected_index_.end(), 0);
 
-	
 	// Setup buffer
 	if(this->buffer_ != nullptr)
 		delete this->buffer_;
@@ -112,6 +114,9 @@ bool ScopePanel::setup(const rosneuro_msgs::NeuroFrame& frame) {
 	this->scope_->setup(this->nsamples_, this->channel_selected_index_);
 
 	this->isset_ = true;
+
+	// Select all channels
+	this->ui_->ChannelsList->selectAll();
 
 	return retcode;
 }
@@ -168,9 +173,9 @@ void ScopePanel::update(const rosneuro_msgs::NeuroFrame& frame) {
 
 void ScopePanel::draw(void) {
 
-	
-
-	this->scope_->plot((*this->buffer_));
+	if(this->isset() == true) {	
+		this->scope_->plot((*this->buffer_));
+	}
 }
 
 void ScopePanel::reset_channels(void) {
@@ -182,6 +187,9 @@ void ScopePanel::reset_channels(void) {
 }
 
 void ScopePanel::on_ChannelSelection(void) {
+
+	if(this->isset() == false)
+		return;
 
 	this->channel_selected_index_.clear();
 

@@ -34,8 +34,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 #SET(CMAKE_AUTOUIC ON)
 
-find_package(Qt5 COMPONENTS Core Gui Widgets)
-
+find_package(Qt5 REQUIRED COMPONENTS Core Gui Widgets )
 ##############################################################################
 # Sections
 ##############################################################################
@@ -101,3 +100,4 @@ target_link_libraries(neuroviz
     Qt5::Widgets
 	qcustomplot
 )
+

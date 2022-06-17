@@ -4,6 +4,7 @@
 #include <deque>
 #include <QMainWindow>
 #include <QMessageBox>
+#include <QElapsedTimer>
 #include "src/ui_neuroviz.h"
 #include "src/ui_neuroviz_dialog_info.h"
 #include "rosneuro_visualizer/EigenBuffer.hpp"
@@ -67,6 +68,7 @@ class MainWindow : public QMainWindow {
 		QList<QString>		exg_labels_;
 		QList<QString>		tri_labels_;
 
+		QElapsedTimer 		timer;
 };
 
 

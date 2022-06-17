@@ -3,6 +3,7 @@
 
 #include <cmath>
 #include <qcustomplot.h>
+#include <QElapsedTimer>
 #include "rosneuro_visualizer/EigenBuffer.hpp"
 #include "rosneuro_visualizer/Palette.hpp"
 
@@ -46,7 +47,9 @@ class TemporalPlot : public QCustomPlot {
  		
 		Palette	palette_;
 
-		int decimation_ = 4;
+		const int decimation_time_ = 20; // milliseconds
+		int decimation_;
+		QElapsedTimer timer;
 };
 
 
