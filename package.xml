@@ -18,5 +18,11 @@
   <depend>rosneuro_msgs</depend>
   <exec_depend>message_runtime</exec_depend>
 
+  <depend>libqt5core</depend>
+  <depend>libqt5gui</depend>
+  <depend>libqt5widgets</depend>
+  <depend>libqt5printsupport</depend>
+  <depend>QCustomPlot</depend>
+
 
 </package>

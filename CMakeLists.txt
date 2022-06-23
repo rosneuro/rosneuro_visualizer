@@ -34,7 +34,12 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 #SET(CMAKE_AUTOUIC ON)
 
-find_package(Qt5 REQUIRED COMPONENTS Core Gui Widgets )
+find_package(Qt5 REQUIRED COMPONENTS Core Gui Widgets PrintSupport)
+
+##############################################################################
+# QCustomPlot
+##############################################################################
+find_package(QCustomPlot REQUIRED)
 ##############################################################################
 # Sections
 ##############################################################################
@@ -98,6 +103,6 @@ target_link_libraries(neuroviz
 	${RTF_LIBRARIES}
     Qt5::Core
     Qt5::Widgets
-	qcustomplot
+	${QCustomPlot_LIBRARIES}
 )
 
