@@ -47,9 +47,9 @@ class TemporalPlot : public QCustomPlot {
  		
 		Palette	palette_;
 
-		const int decimation_time_ = 20; // milliseconds
+		const int decimation_time_ = 5; // milliseconds
 		int decimation_;
-		QElapsedTimer timer;
+		QElapsedTimer timer_;
 };
 
 

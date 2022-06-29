@@ -136,6 +136,10 @@ void TemporalPlot::set_axis_x(unsigned int nsamples) {
 
 void TemporalPlot::plot(const EigenBuffer& buffer) {
 
+	int Tsetdata = 0;
+	int Treplot  = 0;
+	this->timer_.start();
+
 	// Create y-values vector
 	unsigned int pIdx = 0;
 
@@ -145,6 +149,7 @@ void TemporalPlot::plot(const EigenBuffer& buffer) {
 
 	for(auto cit=this->channel_selected_index_.begin(); cit!=this->channel_selected_index_.end(); ++cit) {
 		this->y_.clear();
+
 		for(auto sit=0; sit<nsamples; sit += this->decimation_) {
 			this->y_.push_back(this->rescale(buffer.at(sit, (*cit)), this->scale_) + nchannels - chIdx);
 		}
@@ -152,7 +157,14 @@ void TemporalPlot::plot(const EigenBuffer& buffer) {
 		
 		chIdx++;
 	}
+	Tsetdata = this->timer_.elapsed();
 	this->replot(QCustomPlot::rpQueuedReplot);
+	Treplot  = this->timer_.elapsed() - Tsetdata;
+
+	//printf("+ Elapsed time:\n");
+	//printf("|- Set  data: %d [ms]\n", Tsetdata);
+	//printf("|- Plot data: %d [ms]\n", Treplot);
+
 }
 
 double TemporalPlot::rescale(double value, double scale) {
