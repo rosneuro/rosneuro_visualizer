@@ -18,6 +18,8 @@
   <depend>rosneuro_msgs</depend>
   <exec_depend>message_runtime</exec_depend>
 
+  <depend>librtfilter</depend>
+  
   <depend>libqt5core</depend>
   <depend>libqt5gui</depend>
   <depend>libqt5widgets</depend>
