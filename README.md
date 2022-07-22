@@ -12,7 +12,7 @@ rosneuro_visualizer has been tested with the following configuration:
 rosneuro_visualizer depends on the following libraries:
 - Qt5 (available on ubuntu: qt5-default)
 - rtfilter (available on ubuntu: librtfilter-dev) 
-- QCustomPlot 2 (available on ubuntu: https://www.qcustomplot.com/index.php/download)
+- QCustomPlot 2 (available on ubuntu: libqcustomplot-dev)
 
 ## Usage
 **neuroviz** is launched from the terminal as ROS package. Once the application opens, it is possible to select the reading topic from the GUI.
