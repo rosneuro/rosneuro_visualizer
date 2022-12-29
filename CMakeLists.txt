@@ -106,3 +106,10 @@ target_link_libraries(neuroviz
 	${QCustomPlot_LIBRARIES}
 )
 
+#################
+##   Install   ##
+#################
+install(TARGETS neuroviz
+	RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
+
