@@ -61,9 +61,9 @@ class ScopePanel : public NeuroPanel {
 		float 			ScaleValue_;
 		unsigned int	SpatialFilterIndex_;
 		unsigned int	RefElectrodeIndex_;
-		bool 			IsLowPassEnabled_;
+		bool 			IsLowPassActive_ = false;
 		float			LowPassCutoff_;
-		bool 			IsHighPassEnabled_;
+		bool 			IsHighPassActive_ = false;
 		float			HighPassCutoff_;
 		unsigned int	FilterOrder_;
 		

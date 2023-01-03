@@ -150,10 +150,10 @@ void ScopePanel::update(const rosneuro_msgs::NeuroFrame& frame) {
 	if(data->size() == 0)
 		return;
 
-	if(this->IsLowPassEnabled_ == true)
+	if(this->IsLowPassActive_ == true)
 		this->filter_lp_.apply((*data));
 	
-	if(this->IsHighPassEnabled_ == true)
+	if(this->IsHighPassActive_ == true)
 		this->filter_hp_.apply((*data));
 
 	switch(this->SpatialFilterIndex_) {
@@ -234,32 +234,32 @@ void ScopePanel::on_RefElectrodeChanged(int index) {
 }
 
 void ScopePanel::on_LowPassCheckChanged(int index) {
-	this->IsLowPassEnabled_ = this->ui_->LowPassCheck->isChecked();
+	this->IsLowPassActive_ = this->ui_->LowPassCheck->isChecked();
 
-	if (this->IsLowPassEnabled_ == true) {
+	if (this->IsLowPassActive_ == true) {
 		this->LowPassCutoff_ = this->ui_->LowPassValue->value();
 		this->filter_lp_.setup(this->FilterOrder_, this->samplerate_, this->LowPassCutoff_, this->nchannels_);
 	}
 }
 
 void ScopePanel::on_LowPassValueChanged(double value) {
-	if (this->IsLowPassEnabled_ == true) {
+	if (this->IsLowPassActive_ == true) {
 		this->LowPassCutoff_ = value;
 		this->filter_lp_.setup(this->FilterOrder_, this->samplerate_, this->LowPassCutoff_, this->nchannels_);
 	}
 }
 
 void ScopePanel::on_HighPassCheckChanged(int index) {
-	this->IsHighPassEnabled_ = this->ui_->HighPassCheck->isChecked();
+	this->IsHighPassActive_ = this->ui_->HighPassCheck->isChecked();
 
-	if (this->IsHighPassEnabled_ == true) {
+	if (this->IsHighPassActive_ == true) {
 		this->HighPassCutoff_ = this->ui_->HighPassValue->value();
 		this->filter_hp_.setup(this->FilterOrder_, this->samplerate_, this->HighPassCutoff_, this->nchannels_);
 	}
 }
 
 void ScopePanel::on_HighPassValueChanged(double value) {
-	if (this->IsHighPassEnabled_ == true) {
+	if (this->IsHighPassActive_ == true) {
 		this->HighPassCutoff_ = value;
 		this->filter_hp_.setup(this->FilterOrder_, this->samplerate_, this->HighPassCutoff_, this->nchannels_);
 	}
