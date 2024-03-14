@@ -75,6 +75,16 @@ class ScopePanel : public NeuroPanel {
 
 		QTimer plotter_;
 
+        FRIEND_TEST(ScopePanelTestSuite, Constructor);
+        FRIEND_TEST(ScopePanelTestSuite, SetupValidFrame);
+        FRIEND_TEST(ScopePanelTestSuite, Reset);
+        FRIEND_TEST(ScopePanelTestSuite, Update);
+        FRIEND_TEST(ScopePanelTestSuite, Draw);
+        FRIEND_TEST(ScopePanelTestSuite, OnChannelSelection);
+        FRIEND_TEST(ScopePanelTestSuite, OnScaleChanged);
+        FRIEND_TEST(ScopePanelTestSuite, OnRefElectrodeChanged);
+        FRIEND_TEST(ScopePanelTestSuite, OnSpatialFilterChanged);
+
 };
 
 class EEGPanel : public ScopePanel {

@@ -5,6 +5,7 @@
 #include <QMainWindow>
 #include <QMessageBox>
 #include <QElapsedTimer>
+#include <gtest/gtest_prod.h>
 #include "src/ui_neuroviz.h"
 #include "src/ui_neuroviz_dialog_info.h"
 #include "rosneuro_visualizer/EigenBuffer.hpp"
@@ -69,6 +70,18 @@ class MainWindow : public QMainWindow {
 		QList<QString>		tri_labels_;
 
 		QElapsedTimer 		timer;
+
+        FRIEND_TEST(MainWindowTestSuite, AddPanel);
+        FRIEND_TEST(MainWindowTestSuite, SetCurrentPanel);
+        FRIEND_TEST(MainWindowTestSuite, DestroyPanelWidgets);
+        FRIEND_TEST(MainWindowTestSuite, OnStartEvent);
+        FRIEND_TEST(MainWindowTestSuite, OnStopEvent);
+        FRIEND_TEST(MainWindowTestSuite, OnFirstMessage);
+        FRIEND_TEST(MainWindowTestSuite, OnMessageInfo);
+        FRIEND_TEST(MainWindowTestSuite, SetSamplerate);
+        FRIEND_TEST(MainWindowTestSuite, StoreChannelLabels);
+        FRIEND_TEST(MainWindowTestSuite, SetInfo);
+        FRIEND_TEST(MainWindowTestSuite, OnDataAvailable);
 };
 
 

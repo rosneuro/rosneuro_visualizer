@@ -4,7 +4,7 @@
 void FilterReference::apply(Eigen::MatrixXf& buffer, unsigned int refIdx) {
 
 	//buffer = buffer - (buffer.rowwise().mean()).replicate(1, buffer.cols());
-	buffer = buffer - buffer.row(refIdx).replicate(1, buffer.cols());
+	buffer = buffer - buffer.row(refIdx).replicate(buffer.rows(), 1);
 
 }
 

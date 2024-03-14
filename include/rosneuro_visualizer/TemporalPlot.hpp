@@ -4,6 +4,7 @@
 #include <cmath>
 #include <qcustomplot.h>
 #include <QElapsedTimer>
+#include <gtest/gtest_prod.h>
 #include "rosneuro_visualizer/EigenBuffer.hpp"
 #include "rosneuro_visualizer/Palette.hpp"
 
@@ -50,6 +51,11 @@ class TemporalPlot : public QCustomPlot {
 		const int decimation_time_ = 5; // milliseconds
 		int decimation_;
 		QElapsedTimer timer_;
+
+        FRIEND_TEST(TemporalPlotTestSuite, Constructor);
+        FRIEND_TEST(TemporalPlotTestSuite, SetScale);
+        FRIEND_TEST(TemporalPlotTestSuite, SetTimeWindow);
+        FRIEND_TEST(TemporalPlotTestSuite, Plot);
 };
 
 

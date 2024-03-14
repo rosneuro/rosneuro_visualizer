@@ -6,7 +6,7 @@
 #include <QThread>
 #include <QWaitCondition>
 #include <ros/ros.h>
-
+#include <gtest/gtest_prod.h>
 #include "rosneuro_msgs/NeuroFrame.h"
 
 class DataThread : public QThread {
@@ -59,7 +59,13 @@ class DataThread : public QThread {
     	bool abort_   	= false;
 		bool first_msg_ = true;
 
-		
+	FRIEND_TEST(DataThreadTestSuite, Constructor);
+    FRIEND_TEST(DataThreadTestSuite, Destructor);
+    FRIEND_TEST(DataThreadTestSuite, StartThread);
+    FRIEND_TEST(DataThreadTestSuite, Run);
+    FRIEND_TEST(DataThreadTestSuite, OnReceivedData);
+    FRIEND_TEST(DataThreadTestSuite, ToString);
+    FRIEND_TEST(DataThreadTestSuite, EstimateMessageRate);
 };
 		
 Q_DECLARE_METATYPE(rosneuro_msgs::NeuroFrame);

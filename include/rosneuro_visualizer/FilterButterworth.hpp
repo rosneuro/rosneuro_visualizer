@@ -6,6 +6,7 @@
 #include <Eigen/Dense>
 #include <rtf_common.h>
 #include <rtfilter.h>
+#include <gtest/gtest_prod.h>
 
 enum class FilterType {LOWPASS = 0, HIGHPASS};
 
@@ -28,7 +29,8 @@ class FilterButterworth {
 		hfilter 		filt_ = nullptr;
 		FilterType		type_;
 
-
+    FRIEND_TEST(FilterButterworthTestSuite, Constructor);
+    FRIEND_TEST(FilterButterworthTestSuite, Setup);
 
 };
 
