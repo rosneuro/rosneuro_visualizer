@@ -99,8 +99,6 @@ public:
         ScaleValue->setStyleSheet(QString::fromUtf8("selection-background-color: rgb(136, 138, 133);"));
 
         verticalLayout_3->addWidget(ScaleValue);
-
-
         verticalLayout_10->addWidget(groupBox);
 
         groupBox_2 = new QGroupBox(TimeScope);
@@ -132,8 +130,6 @@ public:
         HighPassValue->setValue(1.000000000000000);
 
         verticalLayout_4->addWidget(HighPassValue);
-
-
         verticalLayout_10->addWidget(groupBox_2);
 
         groupBox_3 = new QGroupBox(TimeScope);
@@ -157,8 +153,6 @@ public:
         ReferenceOpt->setStyleSheet(QString::fromUtf8("selection-background-color: rgb(136, 138, 133);"));
 
         verticalLayout_5->addWidget(ReferenceOpt);
-
-
         verticalLayout_10->addWidget(groupBox_3);
 
         groupBox_8 = new QGroupBox(TimeScope);
@@ -183,8 +177,6 @@ public:
         TimeWindowValue->setStyleSheet(QString::fromUtf8("selection-background-color: rgb(136, 138, 133);"));
 
         verticalLayout->addWidget(TimeWindowValue);
-
-
         verticalLayout_10->addWidget(groupBox_8);
 
         groupBox_4 = new QGroupBox(TimeScope);
@@ -211,11 +203,7 @@ public:
         ChannelsList->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
         verticalLayout_7->addWidget(ChannelsList);
-
-
         verticalLayout_10->addWidget(groupBox_4);
-
-
         horizontalLayout_2->addLayout(verticalLayout_10);
 
         eegScope = new TemporalPlot(TimeScope);
@@ -229,19 +217,14 @@ public:
         eegScope->setStyleSheet(QString::fromUtf8("background-color: rgb(255, 255, 255);"));
 
         horizontalLayout_2->addWidget(eegScope);
-
-
         gridLayout->addLayout(horizontalLayout_2, 0, 0, 1, 1);
-
-
         retranslateUi(TimeScope);
 
         ScaleValue->setCurrentIndex(6);
         TimeWindowValue->setCurrentIndex(3);
 
-
         QMetaObject::connectSlotsByName(TimeScope);
-    } // setupUi
+    }
 
     void retranslateUi(QWidget *TimeScope)
     {
@@ -280,13 +263,13 @@ public:
         TimeWindowValue->setItemText(5, QApplication::translate("TimeScope", "30 s", nullptr));
 
         groupBox_4->setTitle(QApplication::translate("TimeScope", "Electrodes", nullptr));
-    } // retranslateUi
+    }
 
 };
 
 namespace Ui {
     class TimeScope: public Ui_TimeScope {};
-} // namespace Ui
+}
 
 QT_END_NAMESPACE
 

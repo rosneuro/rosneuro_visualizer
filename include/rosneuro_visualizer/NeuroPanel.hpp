@@ -33,5 +33,4 @@ class NeuroPanel : public QWidget {
 
 };
 
-
 #endif

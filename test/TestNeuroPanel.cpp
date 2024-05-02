@@ -13,17 +13,17 @@ class NeuroPanelTest : public NeuroPanel {
 };
 
 class NeuroPanelTestSuite : public ::testing::Test {
-public:
-    NeuroPanelTestSuite() {}
-    ~NeuroPanelTestSuite() {}
-    void SetUp() {
-        name = "TestNeuroPanel";
-        parent = new QWidget();
-        neuroPanel = new NeuroPanelTest(name, parent);
-    }
-    NeuroPanelTest* neuroPanel;
-    QString name;
-    QWidget* parent;
+    public:
+        NeuroPanelTestSuite() {}
+        ~NeuroPanelTestSuite() {}
+        void SetUp() {
+            name = "TestNeuroPanel";
+            parent = new QWidget();
+            neuroPanel = new NeuroPanelTest(name, parent);
+        }
+        NeuroPanelTest* neuroPanel;
+        QString name;
+        QWidget* parent;
 };
 
 TEST_F(NeuroPanelTestSuite, TestSetName) {

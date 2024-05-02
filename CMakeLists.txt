@@ -79,7 +79,7 @@ set( QT_SOURCES
 	src/FilterButterworth.cpp
 	src/FilterCar.cpp
 	src/FilterReference.cpp
-	src/neuroviz.cpp
+		example/RunNeuroviz.cpp
     src/ui_neuroviz.h
     src/ui_neuroviz_dialog_info.h
     src/ui_neuroviz_timescope.h

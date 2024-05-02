@@ -65,19 +65,18 @@ public:
         retranslateUi(Dialog);
 
         QMetaObject::connectSlotsByName(Dialog);
-    } // setupUi
+    }
 
     void retranslateUi(QDialog *Dialog)
     {
         Dialog->setWindowTitle(QApplication::translate("Dialog", "Dialog", nullptr));
         button->setText(QApplication::translate("Dialog", "OK", nullptr));
-    } // retranslateUi
-
+    }
 };
 
 namespace Ui {
     class Dialog: public Ui_Dialog {};
-} // namespace Ui
+}
 
 QT_END_NAMESPACE
 

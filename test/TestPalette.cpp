@@ -2,14 +2,14 @@
 #include "Palette.hpp"
 
 class MainWindowTestSuite : public ::testing::Test {
-public:
-    MainWindowTestSuite() {}
-    ~MainWindowTestSuite() {}
-    void SetUp() {
-        palette = new Palette();
-    }
-    void TearDown() { delete palette; }
-    Palette* palette;
+    public:
+        MainWindowTestSuite() {}
+        ~MainWindowTestSuite() {}
+        void SetUp() {
+            palette = new Palette();
+        }
+        void TearDown() { delete palette; }
+        Palette* palette;
 };
 
 TEST_F(MainWindowTestSuite, AddColor) {

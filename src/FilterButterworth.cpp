@@ -12,8 +12,6 @@ void FilterButterworth::set_type(FilterType type) {
 }
 
 bool FilterButterworth::setup(unsigned int order, double samplerate, double cutoff, unsigned int nchannels) {
-
-	double normfc;
 	bool retcod = true;
 
 	this->order_ 		= order;
@@ -21,8 +19,8 @@ bool FilterButterworth::setup(unsigned int order, double samplerate, double cuto
 	this->cutoff_ 		= cutoff;
 	this->nchannels_ 	= nchannels;
 
-	normfc = this->cutoff_/this->samplerate_;
-	this->filt_ = rtf_create_butterworth(this->nchannels_, RTF_FLOAT, normfc, 
+    double norm_fc = this->cutoff_/this->samplerate_;
+	this->filt_ = rtf_create_butterworth(this->nchannels_, RTF_FLOAT, norm_fc,
 										 this->order_, static_cast<unsigned int>(this->type_));
 
 	if(this->filt_ == nullptr)
@@ -32,7 +30,6 @@ bool FilterButterworth::setup(unsigned int order, double samplerate, double cuto
 }
 
 void FilterButterworth::apply(std::vector<float>& data) {
-
 	unsigned nchannels = this->nchannels_;
 	unsigned nsamples  = data.size()/nchannels;
 	
@@ -44,6 +41,5 @@ void FilterButterworth::apply(std::vector<float>& data) {
 	rtf_filter(this->filt_, input, output, nsamples);
 
 	data.assign(output, output + nchannels*nsamples);
-
 }
 

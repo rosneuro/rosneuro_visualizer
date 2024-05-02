@@ -5,11 +5,8 @@
 
 
 int main(int argc, char** argv) {
-
-	// QT initialization
 	QApplication app(argc, argv);
 
-	// ros initialization
 	ros::init(argc, argv, "neuroviz");
 
 	qRegisterMetaType<rosneuro_msgs::NeuroFrame>();
@@ -17,12 +14,8 @@ int main(int argc, char** argv) {
 	qRegisterMetaType<QList<QString>>();
 	MainWindow window;
 
-
 	window.show();
-
 	int retcod = app.exec();
-
 	return retcod;
-
 }
 

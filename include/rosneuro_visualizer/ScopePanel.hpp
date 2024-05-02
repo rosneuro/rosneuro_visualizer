@@ -105,5 +105,4 @@ class EXGPanel : public ScopePanel {
 		virtual ~EXGPanel(void) {};
 };
 
-
 #endif

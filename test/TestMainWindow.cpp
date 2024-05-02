@@ -3,15 +3,15 @@
 #include "MainWindow.hpp"
 
 class MainWindowTestSuite : public ::testing::Test {
-public:
-    MainWindowTestSuite() {}
-    ~MainWindowTestSuite() {}
-    void SetUp() {
-        qMainWindow = new QMainWindow();
-        mainWindow = new MainWindow(qMainWindow);
-    }
-    MainWindow* mainWindow;
-    QMainWindow* qMainWindow;
+    public:
+        MainWindowTestSuite() {}
+        ~MainWindowTestSuite() {}
+        void SetUp() {
+            qMainWindow = new QMainWindow();
+            mainWindow = new MainWindow(qMainWindow);
+        }
+        MainWindow* mainWindow;
+        QMainWindow* qMainWindow;
 };
 
 TEST_F(MainWindowTestSuite, AddPanel) {

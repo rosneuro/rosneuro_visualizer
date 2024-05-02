@@ -7,7 +7,6 @@
 #include <gtest/gtest_prod.h>
 
 class EigenBuffer {
-
 	public: 
 		EigenBuffer(unsigned int nsamples, unsigned int nchannels);
 		virtual ~EigenBuffer(void);
@@ -29,9 +28,5 @@ class EigenBuffer {
 
         FRIEND_TEST(EigenBufferTestSuite, AppendDataTest);
 };
-
-
-
-
 
 #endif

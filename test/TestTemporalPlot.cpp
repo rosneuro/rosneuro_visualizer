@@ -3,15 +3,15 @@
 #include "TemporalPlot.hpp"
 
 class TemporalPlotTestSuite : public ::testing::Test {
-public:
-    TemporalPlotTestSuite() {}
-    ~TemporalPlotTestSuite() {}
-    void SetUp() {
-        parent = new QWidget();
-        temporalPlot = new TemporalPlot(parent);
-    }
-    TemporalPlot* temporalPlot;
-    QWidget* parent;
+    public:
+        TemporalPlotTestSuite() {}
+        ~TemporalPlotTestSuite() {}
+        void SetUp() {
+            parent = new QWidget();
+            temporalPlot = new TemporalPlot(parent);
+        }
+        TemporalPlot* temporalPlot;
+        QWidget* parent;
 };
 
 TEST_F(TemporalPlotTestSuite, Constructor) {

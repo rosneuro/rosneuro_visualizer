@@ -2,14 +2,14 @@
 #include "FilterReference.hpp"
 
 class FilterReferenceTestSuite : public ::testing::Test {
-public:
-    FilterReferenceTestSuite() {}
-    ~FilterReferenceTestSuite() {}
-    void SetUp() {
-        filterReference = new FilterReference();
-    }
-    void TearDown() { delete filterReference; }
-    FilterReference* filterReference;
+    public:
+        FilterReferenceTestSuite() {}
+        ~FilterReferenceTestSuite() {}
+        void SetUp() {
+            filterReference = new FilterReference();
+        }
+        void TearDown() { delete filterReference; }
+        FilterReference* filterReference;
 };
 
 TEST_F(FilterReferenceTestSuite, ApplyBuffer) {

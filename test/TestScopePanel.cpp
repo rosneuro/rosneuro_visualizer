@@ -4,17 +4,17 @@
 #include "ScopePanel.hpp"
 
 class ScopePanelTestSuite : public ::testing::Test {
-public:
-    ScopePanelTestSuite() {}
-    ~ScopePanelTestSuite() {}
-    void SetUp() {
-        name = "TestScopePanel";
-        parent = new QWidget();
-        scopePanel = new ScopePanel(name, parent);
-    }
-    ScopePanel* scopePanel;
-    QString name;
-    QWidget* parent;
+    public:
+        ScopePanelTestSuite() {}
+        ~ScopePanelTestSuite() {}
+        void SetUp() {
+            name = "TestScopePanel";
+            parent = new QWidget();
+            scopePanel = new ScopePanel(name, parent);
+        }
+        ScopePanel* scopePanel;
+        QString name;
+        QWidget* parent;
 };
 
 TEST_F(ScopePanelTestSuite, Constructor) {

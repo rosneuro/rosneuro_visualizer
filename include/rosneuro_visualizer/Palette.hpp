@@ -8,9 +8,7 @@ class Palette {
 	public:
 		Palette(void);
 		~Palette(void);
-
 		void add(QColor color);
-
 		void next(void);
 		void previous(void);
 		QColor get(void);

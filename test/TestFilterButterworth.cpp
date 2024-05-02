@@ -2,18 +2,18 @@
 #include "FilterButterworth.hpp"
 
 class FilterButterworthTestSuite : public ::testing::Test {
-public:
-    FilterButterworthTestSuite() {}
-    ~FilterButterworthTestSuite() {}
-    void SetUp() {
-        filterButterworth = new FilterButterworth();
-    }
-    void TearDown() { delete filterButterworth; }
-    FilterButterworth* filterButterworth;
-    int order = 4;
-    double samplerate = 1000;
-    double cutoff = 100;
-    int nchannels = 3;
+    public:
+        FilterButterworthTestSuite() {}
+        ~FilterButterworthTestSuite() {}
+        void SetUp() {
+            filterButterworth = new FilterButterworth();
+        }
+        void TearDown() { delete filterButterworth; }
+        FilterButterworth* filterButterworth;
+        int order = 4;
+        double samplerate = 1000;
+        double cutoff = 100;
+        int nchannels = 3;
 };
 
 TEST_F(FilterButterworthTestSuite, Constructor) {

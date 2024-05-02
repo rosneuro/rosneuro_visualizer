@@ -2,14 +2,14 @@
 #include "FilterCar.hpp"
 
 class FilterCarTestSuite : public ::testing::Test {
-public:
-    FilterCarTestSuite() {}
-    ~FilterCarTestSuite() {}
-    void SetUp() {
-        filterCar = new FilterCar();
-    }
-    void TearDown() { delete filterCar; }
-    FilterCar* filterCar;
+    public:
+        FilterCarTestSuite() {}
+        ~FilterCarTestSuite() {}
+        void SetUp() {
+            filterCar = new FilterCar();
+        }
+        void TearDown() { delete filterCar; }
+        FilterCar* filterCar;
 };
 
 TEST_F(FilterCarTestSuite, ApplyBuffer) {

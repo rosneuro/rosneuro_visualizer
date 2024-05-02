@@ -58,5 +58,4 @@ class TemporalPlot : public QCustomPlot {
         FRIEND_TEST(TemporalPlotTestSuite, Plot);
 };
 
-
 #endif

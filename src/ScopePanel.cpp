@@ -2,7 +2,6 @@
 
 ScopePanel::ScopePanel(QString name, QWidget* parent) : NeuroPanel(name, parent),
 										  				ui_(new Ui::TimeScope) {
-
 	this->ui_->setupUi(this);
 	this->scope_ = this->ui_->eegScope;
 
@@ -36,16 +35,16 @@ ScopePanel::ScopePanel(QString name, QWidget* parent) : NeuroPanel(name, parent)
 
 	QObject::connect(&(this->plotter_), SIGNAL(timeout()), this, SLOT(draw()));
 	this->plotter_.start(80);
-
 }
 
 ScopePanel::~ScopePanel(void) {
+	if(this->scope_ != nullptr) {
+        delete this->scope_;
+    }
 
-	if(this->scope_ != nullptr)
-		delete this->scope_;
-
-	if(this->buffer_ != nullptr)
-		delete this->buffer_;
+	if(this->buffer_ != nullptr) {
+        delete this->buffer_;
+    }
 }
 
 bool ScopePanel::setup(const rosneuro_msgs::NeuroFrame& frame) {
@@ -70,15 +69,12 @@ bool ScopePanel::setup(const rosneuro_msgs::NeuroFrame& frame) {
 			break;
 	}
 
-	if(retcode == false)
-		return retcode;
+	if(!retcode) {
+        return retcode;
+    }
 
-	// Setup samples
-	this->nsamples_ = (unsigned int)(this->samplerate_ * this->window_length_); 
-
-	// Setup channels (and channel labels)
+	this->nsamples_ = (unsigned int)(this->samplerate_ * this->window_length_);
 	this->reset_channels();
-	
 
 	this->nchannels_ = datainfo.nchannels;
 	for(auto it=datainfo.labels.begin(); it!=datainfo.labels.end(); ++it) {
@@ -92,13 +88,11 @@ bool ScopePanel::setup(const rosneuro_msgs::NeuroFrame& frame) {
 
 	std::iota(this->channel_selected_index_.begin(), this->channel_selected_index_.end(), 0);
 
-	// Setup buffer
-	if(this->buffer_ != nullptr)
-		delete this->buffer_;
+	if(this->buffer_ != nullptr) {
+        delete this->buffer_;
+    }
 	this->buffer_ = new EigenBuffer(this->nsamples_, this->nchannels_);
 
-
-	// Enable GUI buttons
 	this->ui_->ScaleValue->setEnabled(true);
 	this->ui_->HighPassCheck->setEnabled(true);
 	this->ui_->HighPassValue->setEnabled(true);
@@ -108,14 +102,12 @@ bool ScopePanel::setup(const rosneuro_msgs::NeuroFrame& frame) {
 	this->ui_->ChannelsList->setEnabled(true);
 	this->ui_->TimeWindowValue->setEnabled(true);
 	
-	// Setup temporal scope
 	this->scope_->set_time_window(this->window_length_);
 	this->scope_->set_channel_labels(this->channel_labels_);
 	this->scope_->setup(this->nsamples_, this->channel_selected_index_);
 
 	this->isset_ = true;
 
-	// Select all channels
 	this->ui_->ChannelsList->selectAll();
 
 	return retcode;
@@ -126,14 +118,14 @@ void ScopePanel::reset(void) {
 	this->nsamples_ = 0;
 	this->reset_channels();
 
-	if(this->buffer_ != nullptr) 
-		this->buffer_->reset(this->nsamples_, this->nchannels_);
+	if(this->buffer_ != nullptr) {
+        this->buffer_->reset(this->nsamples_, this->nchannels_);
+    }
 
 	this->isset_ = false;
 }
 
 void ScopePanel::update(const rosneuro_msgs::NeuroFrame& frame) {
-
 	std::vector<float>* data;
 
 	switch(this->getDataType()) {
@@ -147,14 +139,17 @@ void ScopePanel::update(const rosneuro_msgs::NeuroFrame& frame) {
 			break;
 	}
 
-	if(data->size() == 0)
-		return;
+	if(data->size() == 0) {
+        return;
+    }
 
-	if(this->IsLowPassActive_ == true)
+	if(this->IsLowPassActive_){
 		this->filter_lp_.apply((*data));
+    }
 	
-	if(this->IsHighPassActive_ == true)
-		this->filter_hp_.apply((*data));
+	if(this->IsHighPassActive_) {
+        this->filter_hp_.apply((*data));
+    }
 
 	switch(this->SpatialFilterIndex_) {
 		case SpatialFilter::AVERAGE:
@@ -167,13 +162,11 @@ void ScopePanel::update(const rosneuro_msgs::NeuroFrame& frame) {
 			break;
 	}
 
-
 	this->buffer_->add(*data);
 }
 
 void ScopePanel::draw(void) {
-
-	if(this->isset() == true) {	
+	if(this->isset() == true) {
 		this->scope_->plot((*this->buffer_));
 	}
 }
@@ -187,9 +180,9 @@ void ScopePanel::reset_channels(void) {
 }
 
 void ScopePanel::on_ChannelSelection(void) {
-
-	if(this->isset() == false)
-		return;
+	if(!this->isset()) {
+        return;
+    }
 
 	this->channel_selected_index_.clear();
 
@@ -197,7 +190,6 @@ void ScopePanel::on_ChannelSelection(void) {
     	this->channel_selected_index_.push_back(this->ui_->ChannelsList->row(item));
 	}
 
-	// Update temporal scope
 	this->scope_->set_channel_labels(this->channel_labels_);
 	this->scope_->setup(this->nsamples_, this->channel_selected_index_);
 }
@@ -213,20 +205,17 @@ void ScopePanel::on_TimeWindowChanged(int index) {
 	this->nsamples_ = (unsigned int)(this->samplerate_ * this->window_length_);
 	this->buffer_->reset(this->nsamples_, this->nchannels_);
 	
-	// Update temporal scope
 	this->scope_->set_time_window(this->window_length_);
 	this->scope_->setup(this->nsamples_, this->channel_selected_index_);
 }
 
 void ScopePanel::on_SpatialFilterChanged(int index) {
-
 	this->SpatialFilterIndex_ = this->ui_->ReferenceValue->currentIndex();
 	if(this->SpatialFilterIndex_ == SpatialFilter::ELECTRODE) {
 		this->ui_->ReferenceOpt->setEnabled(true);
 	} else {
 		this->ui_->ReferenceOpt->setDisabled(true);
 	}
-	
 }
 
 void ScopePanel::on_RefElectrodeChanged(int index) {
@@ -236,14 +225,14 @@ void ScopePanel::on_RefElectrodeChanged(int index) {
 void ScopePanel::on_LowPassCheckChanged(int index) {
 	this->IsLowPassActive_ = this->ui_->LowPassCheck->isChecked();
 
-	if (this->IsLowPassActive_ == true) {
+	if (this->IsLowPassActive_) {
 		this->LowPassCutoff_ = this->ui_->LowPassValue->value();
 		this->filter_lp_.setup(this->FilterOrder_, this->samplerate_, this->LowPassCutoff_, this->nchannels_);
 	}
 }
 
 void ScopePanel::on_LowPassValueChanged(double value) {
-	if (this->IsLowPassActive_ == true) {
+	if (this->IsLowPassActive_) {
 		this->LowPassCutoff_ = value;
 		this->filter_lp_.setup(this->FilterOrder_, this->samplerate_, this->LowPassCutoff_, this->nchannels_);
 	}
@@ -252,14 +241,14 @@ void ScopePanel::on_LowPassValueChanged(double value) {
 void ScopePanel::on_HighPassCheckChanged(int index) {
 	this->IsHighPassActive_ = this->ui_->HighPassCheck->isChecked();
 
-	if (this->IsHighPassActive_ == true) {
+	if (this->IsHighPassActive_) {
 		this->HighPassCutoff_ = this->ui_->HighPassValue->value();
 		this->filter_hp_.setup(this->FilterOrder_, this->samplerate_, this->HighPassCutoff_, this->nchannels_);
 	}
 }
 
 void ScopePanel::on_HighPassValueChanged(double value) {
-	if (this->IsHighPassActive_ == true) {
+	if (this->IsHighPassActive_) {
 		this->HighPassCutoff_ = value;
 		this->filter_hp_.setup(this->FilterOrder_, this->samplerate_, this->HighPassCutoff_, this->nchannels_);
 	}
