@@ -1,6 +1,7 @@
 #include "rosneuro_visualizer/Palette.hpp"
 
 Palette::Palette(void) {};
+
 Palette::~Palette(void) {};
 
 void Palette::add(QColor color) {

@@ -6,12 +6,9 @@
 #include "rosneuro_visualizer/EigenBuffer.hpp"
 
 class FilterCar {
-
 	public:
 		static void apply(Eigen::MatrixXf& buffer);
 		static void apply(std::vector<float>& data, unsigned int nchannels);
 };
-
-
 
 #endif

@@ -4,9 +4,9 @@
 #include <Eigen/Dense>
 #include <vector>
 #include <cstdio>
+#include <gtest/gtest_prod.h>
 
 class EigenBuffer {
-
 	public: 
 		EigenBuffer(unsigned int nsamples, unsigned int nchannels);
 		virtual ~EigenBuffer(void);
@@ -25,10 +25,8 @@ class EigenBuffer {
 		unsigned int	nchannels_;
 		unsigned int	nsamples_;
 		unsigned int 	index_ = 0;
+
+        FRIEND_TEST(EigenBufferTestSuite, AppendDataTest);
 };
-
-
-
-
 
 #endif

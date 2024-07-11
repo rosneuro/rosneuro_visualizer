@@ -84,7 +84,6 @@ public:
 
         verticalLayout->addWidget(NeuroTab);
 
-
         horizontalLayout->addLayout(verticalLayout);
 
         gridLayout_2 = new QGridLayout();
@@ -130,8 +129,6 @@ public:
         StopButton->setChecked(false);
 
         gridLayout_3->addWidget(StopButton, 2, 0, 1, 2);
-
-
         gridLayout_2->addWidget(groupBox_5, 0, 0, 1, 1);
 
         groupBox_6 = new QGroupBox(centralwidget);
@@ -149,8 +146,6 @@ public:
         NativeRateLabel->setAlignment(Qt::AlignCenter);
 
         gridLayout_4->addWidget(NativeRateLabel, 0, 0, 1, 1);
-
-
         gridLayout_2->addWidget(groupBox_6, 1, 0, 1, 1);
 
         groupBox_9 = new QGroupBox(centralwidget);
@@ -170,8 +165,6 @@ public:
         MessageSeqLabel->setAlignment(Qt::AlignCenter);
 
         gridLayout_6->addWidget(MessageSeqLabel, 0, 0, 1, 1);
-
-
         gridLayout_2->addWidget(groupBox_9, 3, 0, 1, 1);
 
         groupBox_7 = new QGroupBox(centralwidget);
@@ -188,8 +181,6 @@ public:
         MessageRateLabel->setAlignment(Qt::AlignCenter);
 
         gridLayout_5->addWidget(MessageRateLabel, 0, 0, 1, 1);
-
-
         gridLayout_2->addWidget(groupBox_7, 2, 0, 1, 1);
 
         groupBox_10 = new QGroupBox(centralwidget);
@@ -202,11 +193,7 @@ public:
         InfoButton->setEnabled(false);
 
         verticalLayout_2->addWidget(InfoButton);
-
-
         gridLayout_2->addWidget(groupBox_10, 4, 0, 1, 1);
-
-
         horizontalLayout->addLayout(gridLayout_2);
 
         NeuroVizPanel->setCentralWidget(centralwidget);
@@ -223,9 +210,8 @@ public:
 
         NeuroTab->setCurrentIndex(-1);
 
-
         QMetaObject::connectSlotsByName(NeuroVizPanel);
-    } // setupUi
+    }
 
     void retranslateUi(QMainWindow *NeuroVizPanel)
     {
@@ -243,14 +229,14 @@ public:
         MessageRateLabel->setText(QApplication::translate("NeuroVizPanel", "~ Hz", nullptr));
         groupBox_10->setTitle(QApplication::translate("NeuroVizPanel", "Data info:", nullptr));
         InfoButton->setText(QApplication::translate("NeuroVizPanel", "info", nullptr));
-    } // retranslateUi
+    }
 
 };
 
 namespace Ui {
     class NeuroVizPanel: public Ui_NeuroVizPanel {};
-} // namespace Ui
+}
 
 QT_END_NAMESPACE
 
-#endif // NEUROVIZMWHXFT_H
+#endif

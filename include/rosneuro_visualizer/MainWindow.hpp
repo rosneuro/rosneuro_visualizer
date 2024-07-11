@@ -5,6 +5,7 @@
 #include <QMainWindow>
 #include <QMessageBox>
 #include <QElapsedTimer>
+#include <gtest/gtest_prod.h>
 #include "src/ui_neuroviz.h"
 #include "src/ui_neuroviz_dialog_info.h"
 #include "rosneuro_visualizer/EigenBuffer.hpp"
@@ -12,7 +13,7 @@
 #include "rosneuro_visualizer/ScopePanel.hpp"
 
 namespace Ui {
-class MainWindow;
+    class MainWindow;
 }
 
 class MainWindow : public QMainWindow {
@@ -22,25 +23,20 @@ class MainWindow : public QMainWindow {
 	public:
 		MainWindow(QWidget *parent = nullptr);
 		virtual ~MainWindow(void);
-
 		void addPanel(NeuroPanel* panel);
 
 	public slots:
 	
 		void on_TabChanged(int index);
 		void on_InfoEvent(void);
-		
 		void on_StartEvent(void);
 		void on_StopEvent(void);
 		void on_FirstMessage(rosneuro_msgs::NeuroFrame frame);
 		void on_MessageInfo(unsigned int sequence, float rate);
 		void on_DataAvailable(rosneuro_msgs::NeuroFrame frame);
 
-		
-
 	private:
 		void set_current_panel(void);
-
 		void set_samplerate(float rate);
 		void set_messagerate(float rate);
 		void set_messagesequence(unsigned int sequence);
@@ -48,13 +44,8 @@ class MainWindow : public QMainWindow {
 		void store_channel_labels(const rosneuro_msgs::NeuroFrame& frame);
 		void reset_channel_labels(void);
 		void destroy_panel_widgets(void);
-
 		std::string to_string(const rosneuro_msgs::NeuroDataInfo& info);
 
-
-	
-
-	private:
 		Ui::NeuroVizPanel* 	ui_;
 		DataThread 			thread_data_;
 		NeuroPanel*			current_panel_;
@@ -69,6 +60,18 @@ class MainWindow : public QMainWindow {
 		QList<QString>		tri_labels_;
 
 		QElapsedTimer 		timer;
+
+        FRIEND_TEST(MainWindowTestSuite, AddPanel);
+        FRIEND_TEST(MainWindowTestSuite, SetCurrentPanel);
+        FRIEND_TEST(MainWindowTestSuite, DestroyPanelWidgets);
+        FRIEND_TEST(MainWindowTestSuite, OnStartEvent);
+        FRIEND_TEST(MainWindowTestSuite, OnStopEvent);
+        FRIEND_TEST(MainWindowTestSuite, OnFirstMessage);
+        FRIEND_TEST(MainWindowTestSuite, OnMessageInfo);
+        FRIEND_TEST(MainWindowTestSuite, SetSamplerate);
+        FRIEND_TEST(MainWindowTestSuite, StoreChannelLabels);
+        FRIEND_TEST(MainWindowTestSuite, SetInfo);
+        FRIEND_TEST(MainWindowTestSuite, OnDataAvailable);
 };
 
 
